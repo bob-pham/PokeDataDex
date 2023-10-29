@@ -4,7 +4,7 @@
 
 - Bob Pham
 - Jason Wang
-- Stevan Zhuang
+- Stevan Zhuang, CSID: m4y2u, Emails: stevan.zhuang@gmail.com, szhuang1@students.cs.ubc.ca
 
 ### Project Description:
 Our project is a Pokemon Go journal that aims to allow players to keep track of their activities
