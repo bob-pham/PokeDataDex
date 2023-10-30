@@ -2,7 +2,7 @@
 
 ### Group members:
 
-- Bob Pham
+- Bob Pham, CSID: z4j2v, Emails: bobbaopham@gmail.com, bobpham@students.cs.ubc.ca
 - Jason Wang, CSID: x5y6z, Emails: jason.wang014@gmail.com, jasoone@students.cs.ubc.ca
 - Stevan Zhuang, CSID: m4y2u, Emails: stevan.zhuang@gmail.com, szhuang1@students.cs.ubc.ca
 
