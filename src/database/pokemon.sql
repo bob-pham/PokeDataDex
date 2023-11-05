@@ -25,7 +25,8 @@ DROP TABLE PlayerOwnsItem CASCADE CONSTRAINTS;
 DROP TABLE PlayerCompletedMission CASCADE CONSTRAINTS;
 DROP TABLE Battle CASCADE CONSTRAINTS;
 DROP TABLE LeagueMaxCP CASCADE CONSTRAINTS;
-DROP TABLE PlayerCapturedSpecies CASCADE CONSTRAINTS;
+DROP TABLE PlayerCapturedPokemon CASCADE CONSTRAINTS;
+DROP TABLE PlayerCapturedEgg CASCADE CONSTRAINTS;
 DROP TABLE PlayerVisitedPokestop CASCADE CONSTRAINTS;
 DROP TABLE NPCAppearedAtPokestop CASCADE CONSTRAINTS;
 DROP TABLE NPCSighting CASCADE CONSTRAINTS;
@@ -260,7 +261,7 @@ CREATE TABLE Battle(
         ON DELETE CASCADE
 );
 
-CREATE TABLE PlayerCapturedSpecies(
+CREATE TABLE PlayerCapturedPokemon(
     PlayerUsername CHAR(15),
     SpeciesID INTEGER,
     CapturedDate DATE NOT NULL,
@@ -273,12 +274,26 @@ CREATE TABLE PlayerCapturedSpecies(
         ON DELETE CASCADE
 );
 
+CREATE TABLE PlayerCapturedEgg(
+    PlayerUsername CHAR(15),
+    SpeciesID INTEGER,
+    CapturedDate DATE NOT NULL,
+    PRIMARY KEY (PlayerUsername, SpeciesID),
+    FOREIGN KEY (PlayerUsername)
+        REFERENCES Player(Username)
+        ON DELETE CASCADE,
+    FOREIGN KEY (SpeciesID)
+        REFERENCES Egg(ID)
+        ON DELETE CASCADE
+);
+
+
 CREATE TABLE PlayerVisitedPokestop(
     PlayerUsername CHAR(15),
     PokestopCountry CHAR(50),
     PokestopPostalCode CHAR(10),
     PokestopName CHAR(50),
-    VisitedDate INTEGER NOT NULL,
+    VisitedDate DATE NOT NULL,
     PRIMARY KEY (PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName),
     FOREIGN KEY (PlayerUsername)
         REFERENCES Player(Username)
@@ -325,228 +340,262 @@ CREATE TABLE NPCSighting(
 );
 
 -- Populate Tables with data
-INSERT INTO Team(Name, Mascot)
-VALUES (‘Valor’, ‘Moltres’), 
-       (‘Mystic’, ‘Articuno’), 
-       (‘Instinct’, ‘Zapdos’), 
-       (‘Aqua’, ‘Kyogre’), 
-       (‘Magma’, ‘Groudon’);
 
-INSERT INTO MascotColour(Mascot, Colour)
-VALUES (‘Moltres’, ‘Red’), 
-       (‘Articuno’, ‘Blue’), 
-       (‘Zapdos’, ‘Yellow’), 
-       (‘Kyogre’, ‘Sapphire’), 
-       (‘Groudon’, ‘Crimson’);
+INSERT ALL
+ INTO MascotColour(Mascot, Colour) VALUES ('Moltres', 'Red')
+ INTO MascotColour(Mascot, Colour) VALUES ('Articuno', 'Blue')
+ INTO MascotColour(Mascot, Colour) VALUES ('Zapdos', 'Yellow')
+ INTO MascotColour(Mascot, Colour) VALUES ('Kyogre', 'Sapphire')
+ INTO MascotColour(Mascot, Colour) VALUES ('Groudon', 'Crimson')
+SELECT 1 FROM DUAL;
 
-INSERT INTO Player(Username, XP, TeamName)
-VALUES (‘Steph4n’, 6000, ‘Valor’), 
-       (‘J@son’, 30000, ‘Mystic’), 
-       (‘B0b’, 40000, ‘Instinct’), 
-       (‘Greg0r’, 40000, ‘Instinct’), 
-       (‘N0rm’, 40000, ‘Mystic’), 
-       (‘Go4t’, 6000, ‘Valor’), 
-       (‘J3ssica’, 304, ‘Aqua’), 
-       (‘R4ch3l’, 404, ‘Magma’);
+INSERT ALL
+ INTO Team(Name, Mascot) VALUES ('Valor', 'Moltres')
+ INTO Team(Name, Mascot) VALUES ('Mystic', 'Articuno')
+ INTO Team(Name, Mascot) VALUES ('Instinct', 'Zapdos')
+ INTO Team(Name, Mascot) VALUES ('Aqua', 'Kyogre')
+ INTO Team(Name, Mascot) VALUES ('Magma', 'Groudon')
+SELECT 1 FROM DUAL;
 
-INSERT INTO PlayerXPLevel(XP, Level)
-VALUES (6000, 6), 
-       (30000, 30), 
-       (40000, 40), 
-       (300, 1), 
-       (400, 1);
+INSERT ALL
+ INTO PlayerXPLevel(XP, PlayerLevel) VALUES (6000, 6)
+ INTO PlayerXPLevel(XP, PlayerLevel) VALUES (30000, 30)
+ INTO PlayerXPLevel(XP, PlayerLevel) VALUES (40000, 40)
+ INTO PlayerXPLevel(XP, PlayerLevel) VALUES (304, 1)
+ INTO PlayerXPLevel(XP, PlayerLevel) VALUES (404, 1)
+SELECT 1 FROM DUAL;
 
-INSERT INTO Item(Name, Cost, Effect)
-VALUES (‘PokeBall’, 100, ‘Catches Pokemon’), 
-       (‘Incense’, 40, ‘Attracts Pokemon’), 
-       (‘Incubator’, 150, ‘Hatches eggs’), 
-       (‘Raid Pass’, 100, ‘Raid Entry Ticket’), 
-       (‘Lure Module’, 100, ‘Lures Pokemon’);
+INSERT ALL
+ INTO Player(Username, XP, TeamName) VALUES ('Steph4n', 6000, 'Valor')
+ INTO Player(Username, XP, TeamName) VALUES ('J@son', 30000, 'Mystic')
+ INTO Player(Username, XP, TeamName) VALUES ('B0b', 40000, 'Instinct')
+ INTO Player(Username, XP, TeamName) VALUES ('Greg0r', 40000, 'Instinct')
+ INTO Player(Username, XP, TeamName) VALUES ('N0rm', 40000, 'Mystic')
+ INTO Player(Username, XP, TeamName) VALUES ('Go4t', 6000, 'Valor')
+ INTO Player(Username, XP, TeamName) VALUES ('J3ssica', 304, 'Aqua')
+ INTO Player(Username, XP, TeamName) VALUES ('R4ch3l', 404, 'Magma')
+SELECT 1 FROM DUAL;
 
-INSERT INTO ItemEffectType(Effect, Type)
-VALUES (‘Catches Pokemon’, ‘Ball’), 
-       (‘Attracts Pokemon’, ‘Buff’), 
-       (‘Hatches Eggs’, ‘Egg Incubator’), 
-       (‘Raid Entry Ticket’, ‘Raid Items’), 
-       (‘Lures Pokemon’, ‘Lure’);
+INSERT ALL
+ INTO ItemTypeUses(Type, Uses) VALUES ('Ball', 20)
+ INTO ItemTypeUses(Type, Uses) VALUES ('Buff', 1)
+ INTO ItemTypeUses(Type, Uses) VALUES ('Egg Incubator', 5)
+ INTO ItemTypeUses(Type, Uses) VALUES ('Raid Items', 1)
+ INTO ItemTypeUses(Type, Uses) VALUES ('Lure', 1)
+SELECT 1 FROM DUAL;
 
-INSERT INTO ItemTypeUses(Type, Uses)
-VALUES (‘Ball’, 20), 
-       (‘Buff’, 1), 
-       (‘Egg Incubator’, 5), 
-       (‘Raid Items’, 1), 
-       (‘Lure’, 1);
+INSERT ALL
+ INTO ItemEffectType(Effect, Type) VALUES ('Catches Pokemon', 'Ball')
+ INTO ItemEffectType(Effect, Type) VALUES ('Attracts Pokemon', 'Buff')
+ INTO ItemEffectType(Effect, Type) VALUES ('Hatches Eggs', 'Egg Incubator')
+ INTO ItemEffectType(Effect, Type) VALUES ('Raid Entry Ticket', 'Raid Items')
+ INTO ItemEffectType(Effect, Type) VALUES ('Lures Pokemon', 'Lure')
+SELECT 1 FROM DUAL;
 
-INSERT INTO Mission(Name, EventName)
-VALUES (‘Catch 10 Pokemon’, ‘Default’), 
-       (‘A Spooky Message 2018’, ‘Halloween 2018’), 
-       (‘Go Fest 1st Part’, ‘GO Fest 2023 Fascinating Facets’), 
-       (‘All-in-One 151 1st Part’, ‘All-in-One’), 
-       (‘City Safari:Seoul 2023’, ‘City Safari 2023’);
+INSERT ALL
+ INTO Item(Name, Cost, Effect) VALUES ('PokeBall', 100, 'Catches Pokemon')
+ INTO Item(Name, Cost, Effect) VALUES ('Incense', 40, 'Attracts Pokemon')
+ INTO Item(Name, Cost, Effect) VALUES ('Incubator', 150, 'Hatches Eggs')
+ INTO Item(Name, Cost, Effect) VALUES ('Raid Pass', 100, 'Raid Entry Ticket')
+ INTO Item(Name, Cost, Effect) VALUES ('Lure Module', 100, 'Lures Pokemon')
+SELECT 1 FROM DUAL;
 
-INSERT INTO MissionEventNameXP(EventName, XP)
-VALUES (‘Default’, 600), 
-       (‘Halloween 2018’, 1080), 
-       (‘Go Fest 2023 Fascinating Facets’, 2023), 
-       (‘All-in-one’, 5100), 
-       (‘City Safari 2023’ 2023);
+INSERT ALL
+ INTO MissionEventNameXP(EventName, XP) VALUES ('Default', 600)
+ INTO MissionEventNameXP(EventName, XP) VALUES ('Halloween 2018', 1080)
+ INTO MissionEventNameXP(EventName, XP) VALUES ('GO Fest 2023 Fascinating Facets', 2023)
+ INTO MissionEventNameXP(EventName, XP) VALUES ('All-in-One', 5100)
+ INTO MissionEventNameXP(EventName, XP) VALUES ('City Safari 2023', 2023)
+SELECT 1 FROM DUAL;
 
-INSERT INTO Location(Country, PostalCode, Name, Biome)
-VALUES (‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, ‘Nature’), 
-       (‘Canada’, ‘K1A 0A6’, ‘House of Commons’, ‘Water’), 
-       (‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’, ‘Snow’), 
-       (‘USA’, ‘NM 87111’, ‘White Residence’, ‘Toxic’), 
-       ('France', '75001', 'Louvre Museum', 'Nature'),
-       ('Australia', '2000', 'Sydney Opera House', 'Water'),
-       ('Brazil', '71020-970', 'Christ the Redeemer', 'Mountain'),
-       ('Japan', '100-0001', 'Shibuya Crossing', 'Nature'),
-       (‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’, ‘Enchanted’);
+INSERT ALL
+ INTO Mission(Name, EventName) VALUES ('Catch 10 Pokemon', 'Default')
+ INTO Mission(Name, EventName) VALUES ('A Spooky Message 2018', 'Halloween 2018')
+ INTO Mission(Name, EventName) VALUES ('Go Fest 1st Part', 'GO Fest 2023 Fascinating Facets')
+ INTO Mission(Name, EventName) VALUES ('All-in-One 151 1st Part', 'All-in-One')
+ INTO Mission(Name, EventName) VALUES ('City Safari:Seoul 2023', 'City Safari 2023')
+SELECT 1 FROM DUAL;
 
-INSERT INTO BiomeAttackBonus(Biome, AttackBonus)
-VALUES (‘Nature’, ‘Grass’), 
-       (‘Water’, ‘Water’), 
-       (‘Snow’, ‘Ice’), 
-       (‘Toxic’, ‘Poison’), 
-       (‘Mountain’, ‘Ground’),
-       (‘Enchanted’, ‘Fairy’);
+INSERT ALL
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Nature', 'Grass')
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Water', 'Water')
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Snow', 'Ice')
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Toxic', 'Poison')
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Mountain', 'Ground')
+ INTO BiomeAttackBonus(Biome, AttackBonus) VALUES ('Enchanted', 'Fairy')
+SELECT 1 FROM DUAL;
 
-INSERT INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName)
-VALUES (‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, ‘ICICS Building’, ‘UBC’), 
-       (‘Canada’, ‘K1A 0A6’, ‘House of Commons’, ‘House of Commons CAN’, ‘Gov Of Canada’), 
-       (‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’, ‘GuestServicesBlckcmb’ ,‘Whistler’), 
-       (‘USA’, ‘NM 87111’, ‘White Residence, ‘TheOneWhoKnocks’, ‘Heisenberg’), 
-       ('Brazil', '71020-970', 'Christ the Redeemer', ‘The Redeemer’, 'Church'),
-       ('Japan', '100-0001', 'Shibuya Crossing', ‘Shibuya’, 'Shibuya'),
-       (‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’, ‘BuckinghamPalace’, ‘Royal Family’);
+INSERT ALL
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Canada', 'V6T 1Z4', 'UBC Science', 'Nature')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Canada', 'K1A 0A6', 'House of Commons', 'Water')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Canada', 'V0N 1B4', 'Blackcomb Guest Services', 'Snow')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('USA', 'NM 87111', 'White Residence', 'Toxic')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('France', '75001', 'Louvre Museum', 'Nature')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Australia', '2000', 'Sydney Opera House', 'Water')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Brazil', '71020-970', 'Christ the Redeemer', 'Mountain')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('Japan', '100-0001', 'Shibuya Crossing', 'Nature')
+ INTO Location(Country, PostalCode, Name, Biome) VALUES ('UK', 'SW1A 1BQ', 'Buckingham Palace', 'Enchanted')
+SELECT 1 FROM DUAL;
 
-INSERT INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName)
-VALUES (‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, 0, ‘Starbucks’), 
-       (‘Canada’, ‘K1A 0A6’, ‘House of Commons’, 7, ‘Gov Of Canada’), 
-       (‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’, 7, ‘Whistler’), 
-       (‘USA’, ‘NM 87111’, ‘White Residence’, 10, ‘Heisenberg’), 
-       ('France', '75001', 'Louvre Museum', 8, 'Louvre Staff'),
-       ('Australia', '2000', 'Sydney Opera House', 9, 'Kangaroos'),
-       (‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’, 9, ‘Royal Family’);
+INSERT ALL
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('Canada', 'V6T 1Z4', 'UBC Science', 'ICICS Building', 'UBC')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('Canada', 'K1A 0A6', 'House of Commons', 'House of Commons CAN', 'Gov Of Canada')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('Canada', 'V0N 1B4', 'Blackcomb Guest Services', 'GuestServicesBlckcmb' ,'Whistler')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('USA', 'NM 87111', 'White Residence', 'TheOneWhoKnocks', 'Heisenberg')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('Brazil', '71020-970', 'Christ the Redeemer', 'The Redeemer', 'Church')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('Japan', '100-0001', 'Shibuya Crossing', 'Shibuya', 'Shibuya')
+ INTO Gym(Country, PostalCode, Name, BadgeName, SponsorName) VALUES ('UK', 'SW1A 1BQ', 'Buckingham Palace', 'BuckinghamPalace', 'Royal Family')
+SELECT 1 FROM DUAL;
 
-INSERT INTO Egg(ID, SpeciesName)
-VALUES (0001, ‘MagiKarp’)
-       (0002, ‘Machop’), 
-       (0003, ‘Meowth’), 
-       (0004, ‘Deino’), 
-       (0005, ‘Larvitar’);
+INSERT ALL
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('Canada', 'V6T 1Z4', 'UBC Science', 0, 'Starbucks')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('Canada', 'K1A 0A6', 'House of Commons', 7, 'Gov Of Canada')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('Canada', 'V0N 1B4', 'Blackcomb Guest Services', 7, 'Whistler')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('USA', 'NM 87111', 'White Residence', 10, 'Heisenberg')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('France', '75001', 'Louvre Museum', 8, 'Louvre Staff')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('Australia', '2000', 'Sydney Opera House', 9, 'Kangaroos')
+ INTO Pokestop(Country, PostalCode, Name, Rating, SponsorName) VALUES ('UK', 'SW1A 1BQ', 'Buckingham Palace', 9, 'Royal Family')
+SELECT 1 FROM DUAL;
 
-INSERT INTO EggSpecies(SpeciesName, Type1, Type2, Distance)
-VALUES (‘MagiKarp’, ‘Water’, NULL, 2), 
-       (‘Machop’, ‘Fighting’, NULL, 5), 
-       (‘Meowth’, ‘Normal’, NULL, 7), 
-       (‘Deino’, ‘Dark’, ‘Dragon’, 10), 
-       (‘Larvitar’, ‘Rock’, ‘Ground’, 12);
-  
-INSERT INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName)
-VALUES (0006, ‘Slaking’, 3804, 114, NULL, ‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, ‘2023-10-19’, ‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’), 
-       (0007, ‘Vaporeon’, 2616, 0, ‘Squidward’, NULL, NULL, NULL, ‘Canada’, ‘V6T 1Z4’, ‘UBC Science’), 
-       (0008, ‘Dialga’, 2242, 0, NULL, NULL, NULL, NULL, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’), 
-       (0009, ‘Abomasnow’, 1803, 1, ‘ObamaSnow’, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’), 
-       (0010, ‘Regirock’, 1319, 3, ‘Dwayne’, ‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’, ‘USA’, ‘NM 87111’, ‘White Residence’);
+INSERT ALL
+ INTO EggSpecies(SpeciesName, Type1, Type2, Distance) VALUES ('MagiKarp', 'Water', NULL, 2)
+ INTO EggSpecies(SpeciesName, Type1, Type2, Distance) VALUES ('Machop', 'Fighting', NULL, 5)
+ INTO EggSpecies(SpeciesName, Type1, Type2, Distance) VALUES ('Meowth', 'Normal', NULL, 7)
+ INTO EggSpecies(SpeciesName, Type1, Type2, Distance) VALUES ('Deino', 'Dark', 'Dragon', 10)
+ INTO EggSpecies(SpeciesName, Type1, Type2, Distance) VALUES ('Larvitar', 'Rock', 'Ground', 12)
+SELECT 1 FROM DUAL;
 
-INSERT INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2)
-VALUES (‘Slacking’, ‘Normal’, NULL), 
-       (‘Vaporeon’, ‘Water’, NULL), 
-       (‘Dialga’, ‘Steel’, ‘Dragon’), 
-       (‘Abomasnow’, ‘Grass’, ‘Ice’), 
-       (‘Regirock’, ‘Rock’, NULL);
+INSERT ALL
+ INTO Egg(ID, SpeciesName) VALUES (0001, 'MagiKarp')
+ INTO Egg(ID, SpeciesName) VALUES (0002, 'Machop')
+ INTO Egg(ID, SpeciesName) VALUES (0003, 'Meowth')
+ INTO Egg(ID, SpeciesName) VALUES (0004, 'Deino')
+ INTO Egg(ID, SpeciesName) VALUES (0005, 'Larvitar')
+SELECT 1 FROM DUAL;
 
-INSERT INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack)
-VALUES (‘Slaking’, 3804, 218, 3), 
-       (‘Vaporeon’, 2616, 215, 2), 
-       (‘Dialga’, 2242, 131, 3), 
-       (‘Abomasnow’, 1803, 154, 2), 
-       (‘Regirock’, 1319, 105, 1);
+INSERT ALL
+ INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2) VALUES ('Slaking', 'Normal', NULL)
+ INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2) VALUES ('Vaporeon', 'Water', NULL)
+ INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2) VALUES ('Dialga', 'Steel', 'Dragon')
+ INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2) VALUES ('Abomasnow', 'Grass', 'Ice')
+ INTO PokemonSpeciesTypes(SpeciesName, Type1, Type2) VALUES ('Regirock', 'Rock', NULL)
+SELECT 1 FROM DUAL;
 
-INSERT INTO NPC(Name, Role)
-VALUES (‘Cadela’, ‘Team Leader’), 
-       (‘Professor Oak’, ‘Professor’), 
-       (‘Arlo’, ‘Team Rocket Leader’), 
-       (‘Male Grunt’, ‘Team Rocket Grunt’), 
-       (‘Balloon Grunt’, ‘Team Rocket Balloon’);
+INSERT ALL
+ INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack) VALUES ('Slaking', 3804, 218, 3)
+ INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack) VALUES ('Vaporeon', 2616, 215, 2)
+ INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack) VALUES ('Dialga', 2242, 131, 3)
+ INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack) VALUES ('Abomasnow', 1803, 154, 2)
+ INTO PokemonSpeciesCP(SpeciesName, CP, HP, Attack) VALUES ('Regirock', 1319, 105, 1)
+SELECT 1 FROM DUAL;
 
-INSERT INTO RoleCanBattle(Role, CanBattle)
-VALUES (‘TeamLeader’, FALSE), 
-       (‘PROFESSOR’, FALSE), 
-       (‘Team Rocket Leader’, TRUE), 
-       (‘Team Rocket Grunt’, TRUE), 
-       (‘Team Rocket Balloon’, ‘TRUE’);
+INSERT ALL
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0006, 'Slaking', 3804, 114, NULL, 'Canada', 'V6T 1Z4', 'UBC Science', '19-Oct-2023', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0007, 'Vaporeon', 2616, 0, 'Squidward', NULL, NULL, NULL, NULL, 'Canada', 'V6T 1Z4', 'UBC Science')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0008, 'Dialga', 2242, 0, NULL, NULL, NULL, NULL, NULL, 'Canada', 'K1A 0A6', 'House of Commons')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0009, 'Abomasnow', 1803, 1, 'ObamaSnow', 'Canada', 'K1A 0A6','House of Commons', '11-Sep-2022', 'Canada', 'K1A 0A6', 'House of Commons')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0010, 'Regirock', 1319, 3, 'Dwayne', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', '04-Nov-2023', 'USA', 'NM 87111', 'White Residence')
+SELECT 1 FROM DUAL;
 
-INSERT INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity)
-VALUES (‘Steph4n’, ‘LureModule’, 1), 
-       (‘J@son’, ‘Pokeball’, 20), 
-       (‘B0b’, ‘Pokeball’, 10), 
-       (‘B0b’, ‘LureModule’, 5),
-       (‘Greg0r’, ‘Pokeball’, 100), 
-       (‘N0rm’, ‘Pokeball’, 420), 
-       (‘Go4t’, ‘LureModule’, 23),  
-       (‘B0b’, ‘Raid Pass’, 2);
+INSERT ALL
+ INTO RoleCanBattle(Role, CanBattle) VALUES ('Team Leader', 0)
+ INTO RoleCanBattle(Role, CanBattle) VALUES ('Professor', 0)
+ INTO RoleCanBattle(Role, CanBattle) VALUES ('Team Rocket Leader', 1)
+ INTO RoleCanBattle(Role, CanBattle) VALUES ('Team Rocket Grunt', 1)
+ INTO RoleCanBattle(Role, CanBattle) VALUES ('Team Rocket Balloon', 1)
+SELECT 1 FROM DUAL;
 
-INSERT INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate)
-VALUES (‘B0b’, ‘Catch 10 Pokemon’, ‘2018-09-11’), 
-       (‘B0b’, ‘All-in-One 151 1st Part’, ‘2021-02-20’), 
-       (‘J@son’, ‘Catch 10 Pokemon’, ‘2018-10-01’), 
-       (‘Steph4n’, ‘Catch 10 Pokemon’, ‘2023-10-19’), 
-       (‘J3ssica’, ‘Go Fest 1st Part’, ‘2023-08-22’);
+INSERT ALL
+ INTO NPC(Name, Role) VALUES ('Cadela', 'Team Leader')
+ INTO NPC(Name, Role) VALUES ('Professor Oak', 'Professor')
+ INTO NPC(Name, Role) VALUES ('Arlo', 'Team Rocket Leader')
+ INTO NPC(Name, Role) VALUES ('Male Grunt', 'Team Rocket Grunt')
+ INTO NPC(Name, Role) VALUES ('Balloon Grunt', 'Team Rocket Balloon')
+SELECT 1 FROM DUAL;
 
-INSERT INTO BattleLeague(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time)
-VALUES (‘2023-10-19’, ‘B0b’, ‘J@son’, ‘Great League’, 5), 
-       (‘2023-10-18’, ‘B0b’, ‘J3ssica’, ‘Ultra League’, 4), 
-       (‘2023-10-18’, ‘J@son’, ‘Steph4n’, ‘Master League’, 5), 
-       (‘2022-01-05’, ‘J3ssica’, ‘R4chel’, ‘Training’, 10),
-       (‘2022-10-05’, ‘N0rm’, ‘J3ssica’, ‘Ultra League’, 3), 
-       (‘2023-01-18’, ‘J@son’, ‘Greg0r’, ‘Master League’, 1), 
-       (‘2021-01-05’, ‘Go4t’, ‘R4chel’, ‘Training’, 10),  
-       (‘2018-05-10’, ‘B0b’, ‘J@son’, ‘Friendly’, 1);
+INSERT ALL
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('Steph4n', 'Lure Module', 1)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('J@son', 'PokeBall', 20)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('B0b', 'PokeBall', 10)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('B0b', 'Lure Module', 5)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('Greg0r', 'PokeBall', 100)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('N0rm', 'PokeBall', 420)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('Go4t', 'Lure Module', 23)
+ INTO PlayerOwnsItem(PlayerUsername, ItemName, Quantity) VALUES ('B0b', 'Raid Pass', 2)
+SELECT 1 FROM DUAL;
 
-INSERT INTO LeagueMaxCP(League, CP)
-VALUES (‘Great League’, 1500), 
-       (‘Ultra League’, 2500), 
-       (‘Master League’, 9999), 
-       (‘Training’, 1500), 
-       (‘Friendly’, 2500);
+INSERT ALL
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'Catch 10 Pokemon', '11-Sep-2018')
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'All-in-One 151 1st Part', '20-Feb-2021')
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J@son', 'Catch 10 Pokemon', '01-Oct-2018')
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('Steph4n', 'Catch 10 Pokemon', '19-Oct-2023')
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J3ssica', 'Go Fest 1st Part', '22-Aug-2023')
+SELECT 1 FROM DUAL;
 
+INSERT ALL
+ INTO LeagueMaxCP(League, MaxCP) VALUES ('Great League', 1500)
+ INTO LeagueMaxCP(League, MaxCP) VALUES ('Ultra League', 2500)
+ INTO LeagueMaxCP(League, MaxCP) VALUES ('Master League', 9999)
+ INTO LeagueMaxCP(League, MaxCP) VALUES ('Training', 1500)
+ INTO LeagueMaxCP(League, MaxCP) VALUES ('Friendly', 2500)
+SELECT 1 FROM DUAL;
 
-INSERT INTO PlayerCapturedSpecies(PlayerUsername, SpeciesID, CapturedDate)
-VALUES (‘B0b’, 0008, ‘2019-03-23’), 
-       (‘J@son’, 0010, ‘2019-04-04’), 
-       (‘St4phan’, 0007, ‘2021-11-14’), 
-       (‘B0b’, 0001, ‘2020-04-23’), 
-       (‘J@son’, 0002, ‘2021-05-05’), 
-       (‘St4phan’, 0003, ‘2021-12-14’), 
-       (‘J3ssica’, 0009, ‘2019-02-26’), 
-       (‘R4chel’,  0006, ‘2019-06-18’);
+INSERT ALL
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('19-Oct-2023', 'B0b', 'J@son', 'Great League', 5)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Oct-2023', 'B0b', 'J3ssica', 'Ultra League', 4)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Oct-2023', 'J@son', 'Steph4n', 'Master League', 5)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Jan-2022', 'J3ssica', 'R4ch3l', 'Training', 10)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Oct-2022', 'N0rm', 'J3ssica', 'Ultra League', 3)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Jan-2023', 'J@son', 'Greg0r', 'Master League', 1)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Jan-2021', 'Go4t', 'R4ch3l', 'Training', 10)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('10-May-2018', 'B0b', 'J@son', 'Friendly', 1)
+SELECT 1 FROM DUAL;
 
-INSERT INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate)
-VALUES (‘B0b’, ‘USA’, ‘NM 87111’, ‘White Residence’, ‘2022-12-02’), 
-       (‘J@son’, ‘USA’, ‘NM 87111’, ‘White Residence’, ‘2023-09-06’), 
-       (‘St4phan’, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’, ‘2020-04-05’), 
-       (‘J3ssica’, ‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, ‘2023-10-19’), 
-       (‘R4chel’, ‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’, ‘BuckinghamPalace’, ‘2019-01-01’);
+INSERT ALL
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0008, '23-Mar-2019')
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0010, '04-Apr-2019')
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0007, '14-Nov-2021')
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J3ssica', 0009, '26-Feb-2019')
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('R4ch3l',  0006, '18-Jun-2019')
+SELECT 1 FROM DUAL;
 
-INSERT INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName)
-VALUES (‘Male Grunt’, ‘Canada’, ‘V6T 1Z4’, ‘UBC Science’), 
-       (‘Male Grunt’, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’), 
-       (‘Arlo’, ‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’), 
-       (‘Balloon Grunt’, ‘USA’, ‘NM 87111’, ‘White Residence’), 
-       (‘Professor Oak’, ‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’);
+INSERT ALL
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0001, '23-Apr-2020')
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0002, '05-May-2021')
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0003, '14-Dec-2021')
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('N0rm', 0004, '21-Jan-2023')
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Greg0r', 0005, '18-Aug-2022')
+SELECT 1 FROM DUAL;
+ 
+INSERT ALL
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('B0b', 'USA', 'NM 87111', 'White Residence', '02-Dec-2022')
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J@son', 'USA', 'NM 87111', 'White Residence', '06-Sep-2023')
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('Steph4n', 'Canada', 'K1A 0A6', 'House of Commons', '05-Apr-2020')
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J3ssica', 'Canada', 'V6T 1Z4', 'UBC Science', '19-Oct-2023')
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('R4ch3l', 'UK', 'SW1A 1BQ', 'Buckingham Palace', '01-Jan-2019')
+SELECT 1 FROM DUAL;
 
-INSERT INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName)
-VALUES (‘Male Grunt’, ‘Canada’, ‘V6T 1Z4’, ‘UBC Science’, ‘2023-10-11’, ‘Default’), 
-       (‘Male Grunt’, ‘Canada’, ‘K1A 0A6’, ‘House of Commons’, ‘2018-10-30’, ‘Halloween 2018’), 
-       (‘Arlo’, ‘Canada’, ‘V0N 1B4’, ‘Blackcomb Guest Services’, ‘2023-07-22’, ‘Go Fest 2023 Fascinating Facets’), 
-       (‘Balloon Grunt’, ‘USA’, ‘NM 87111’, ‘White Residence’, ‘2021-02-20’, ‘All-in-One 151’), 
-       (‘Professor Oak’, ‘UK’, ‘SW1A 1BQ’, ‘Buckingham Palace’, ‘2023-11-04’, ‘City Safari 2023’);
+INSERT ALL
+ INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName) VALUES ('Male Grunt', 'Canada', 'V6T 1Z4', 'UBC Science')
+ INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName) VALUES ('Male Grunt', 'Canada', 'K1A 0A6', 'House of Commons')
+ INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName) VALUES ('Arlo', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services')
+ INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName) VALUES ('Balloon Grunt', 'USA', 'NM 87111', 'White Residence')
+ INTO NPCAppearedAtPokestop(NPCName, PokestopCountry, PokestopPostalCode, PokestopName) VALUES ('Professor Oak', 'UK', 'SW1A 1BQ', 'Buckingham Palace')
+SELECT 1 FROM DUAL;
 
-INSERT INTO NPCSightingEventName(EventName, XP, Duration)
-VALUES (‘Default’, 100, 60), 
-       (‘Halloween 2018’, 1000, 48), 
-       (‘Go Fest 2023 Fascinating Facets’, 2023, 48), 
-       (‘All-in-one’, 250, 48), 
-       (‘City Safari 2023’, 2023, 48);
+INSERT ALL
+ INTO NPCSightingEventName(EventName, XP, Duration) VALUES ('Default', 100, 60)
+ INTO NPCSightingEventName(EventName, XP, Duration) VALUES ('Halloween 2018', 1000, 48)
+ INTO NPCSightingEventName(EventName, XP, Duration) VALUES ('Go Fest 2023 Fascinating Facets', 2023, 48)
+ INTO NPCSightingEventName(EventName, XP, Duration) VALUES ('All-in-One 151', 250, 48)
+ INTO NPCSightingEventName(EventName, XP, Duration) VALUES ('City Safari 2023', 2023, 48)
+SELECT 1 FROM DUAL;
+
+INSERT ALL
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'V6T 1Z4', 'UBC Science', '11-Oct-2023', 'Default')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'K1A 0A6', 'House of Commons', '30-Oct-2018', 'Halloween 2018')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Arlo', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', '22-Jul-2023', 'Go Fest 2023 Fascinating Facets')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Balloon Grunt', 'USA', 'NM 87111', 'White Residence', '20-Feb-2021', 'All-in-One 151')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Professor Oak', 'UK', 'SW1A 1BQ', 'Buckingham Palace', '04-Nov-2023', 'City Safari 2023')
+SELECT 1 FROM DUAL;
 
