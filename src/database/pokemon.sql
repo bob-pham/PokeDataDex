@@ -490,11 +490,11 @@ INSERT ALL
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0006, 'Slaking', 3804, 114, NULL, 'Canada', 'V6T 1Z4', 'UBC Science', '19-Oct-2023', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0006, 'Slaking', 3804, 114, NULL, 'Canada', 'V6T 1Z4', 'UBC Science', TO_DATE('19-Oct-2023', 'DD-Mon-YY'), 'Canada', 'V0N 1B4', 'Blackcomb Guest Services')
  INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0007, 'Vaporeon', 2616, 0, 'Squidward', NULL, NULL, NULL, NULL, 'Canada', 'V6T 1Z4', 'UBC Science')
  INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0008, 'Dialga', 2242, 0, NULL, NULL, NULL, NULL, NULL, 'Canada', 'K1A 0A6', 'House of Commons')
- INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0009, 'Abomasnow', 1803, 1, 'ObamaSnow', 'Canada', 'K1A 0A6','House of Commons', '11-Sep-2022', 'Canada', 'K1A 0A6', 'House of Commons')
- INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0010, 'Regirock', 1319, 3, 'Dwayne', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', '04-Nov-2023', 'USA', 'NM 87111', 'White Residence')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0009, 'Abomasnow', 1803, 1, 'ObamaSnow', 'Canada', 'K1A 0A6','House of Commons', TO_DATE('11-Sep-2022', 'DD-Mon-YY'), 'Canada', 'K1A 0A6', 'House of Commons')
+ INTO Pokemon(ID, SpeciesName, CP, Distance, Nickname, GymCountry, GymPostalCode, GymName, StationedAtDate, FoundCountry, FoundPostalCode, FoundName) VALUES (0010, 'Regirock', 1319, 3, 'Dwayne', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', TO_DATE('04-Nov-2023', 'DD-Mon-YY'), 'USA', 'NM 87111', 'White Residence')
 SELECT 1 FROM DUAL;
 
 INSERT ALL
@@ -525,11 +525,11 @@ INSERT ALL
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'Catch 10 Pokemon', '11-Sep-2018')
- INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'All-in-One 151 1st Part', '20-Feb-2021')
- INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J@son', 'Catch 10 Pokemon', '01-Oct-2018')
- INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('Steph4n', 'Catch 10 Pokemon', '19-Oct-2023')
- INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J3ssica', 'Go Fest 1st Part', '22-Aug-2023')
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'Catch 10 Pokemon', TO_DATE('11-Sep-2018', 'DD-Mon-YY'))
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('B0b', 'All-in-One 151 1st Part', TO_DATE('20-Feb-2021', 'DD-Mon-YY'))
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J@son', 'Catch 10 Pokemon', TO_DATE('01-Oct-2018', 'DD-Mon-YY'))
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('Steph4n', 'Catch 10 Pokemon', TO_DATE('19-Oct-2023', 'DD-Mon-YY'))
+ INTO PlayerCompletedMission(PlayerUsername, MissionName, CompletedDate) VALUES ('J3ssica', 'Go Fest 1st Part', TO_DATE('22-Aug-2023', 'DD-Mon-YY'))
 SELECT 1 FROM DUAL;
 
 INSERT ALL
@@ -541,38 +541,38 @@ INSERT ALL
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('19-Oct-2023', 'B0b', 'J@son', 'Great League', 5)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Oct-2023', 'B0b', 'J3ssica', 'Ultra League', 4)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Oct-2023', 'J@son', 'Steph4n', 'Master League', 5)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Jan-2022', 'J3ssica', 'R4ch3l', 'Training', 10)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Oct-2022', 'N0rm', 'J3ssica', 'Ultra League', 3)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('18-Jan-2023', 'J@son', 'Greg0r', 'Master League', 1)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('05-Jan-2021', 'Go4t', 'R4ch3l', 'Training', 10)
- INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES ('10-May-2018', 'B0b', 'J@son', 'Friendly', 1)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('19-Oct-2023', 'DD-Mon-YY'), 'B0b', 'J@son', 'Great League', 5)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('18-Oct-2023', 'DD-Mon-YY'), 'B0b', 'J3ssica', 'Ultra League', 4)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('18-Oct-2023', 'DD-Mon-YY'), 'J@son', 'Steph4n', 'Master League', 5)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('05-Jan-2022', 'DD-Mon-YY'), 'J3ssica', 'R4ch3l', 'Training', 10)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('05-Oct-2022', 'DD-Mon-YY'), 'N0rm', 'J3ssica', 'Ultra League', 3)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('18-Jan-2023', 'DD-Mon-YY'), 'J@son', 'Greg0r', 'Master League', 1)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('05-Jan-2021', 'DD-Mon-YY'), 'Go4t', 'R4ch3l', 'Training', 10)
+ INTO Battle(DateOccurred, PlayerUsername1, PlayerUsername2, League, Time) VALUES (TO_DATE('10-May-2018', 'DD-Mon-YY'), 'B0b', 'J@son', 'Friendly', 1)
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0008, '23-Mar-2019')
- INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0010, '04-Apr-2019')
- INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0007, '14-Nov-2021')
- INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J3ssica', 0009, '26-Feb-2019')
- INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('R4ch3l',  0006, '18-Jun-2019')
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0008, TO_DATE('23-Mar-2019', 'DD-Mon-YY'))
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0010, TO_DATE('04-Apr-2019', 'DD-Mon-YY'))
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0007, TO_DATE('14-Nov-2021', 'DD-Mon-YY'))
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J3ssica', 0009, TO_DATE('26-Feb-2019', 'DD-Mon-YY'))
+ INTO PlayerCapturedPokemon(PlayerUsername, SpeciesID, CapturedDate) VALUES ('R4ch3l',  0006, TO_DATE('18-Jun-2019', 'DD-Mon-YY'))
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0001, '23-Apr-2020')
- INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0002, '05-May-2021')
- INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0003, '14-Dec-2021')
- INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('N0rm', 0004, '21-Jan-2023')
- INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Greg0r', 0005, '18-Aug-2022')
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('B0b', 0001, TO_DATE('23-Apr-2020', 'DD-Mon-YY'))
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('J@son', 0002, TO_DATE('05-May-2021', 'DD-Mon-YY'))
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Steph4n', 0003, TO_DATE('14-Dec-2021', 'DD-Mon-YY'))
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('N0rm', 0004, TO_DATE('21-Jan-2023', 'DD-Mon-YY'))
+ INTO PlayerCapturedEgg(PlayerUsername, SpeciesID, CapturedDate) VALUES ('Greg0r', 0005, TO_DATE('18-Aug-2022', 'DD-Mon-YY'))
 SELECT 1 FROM DUAL;
  
 INSERT ALL
- INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('B0b', 'USA', 'NM 87111', 'White Residence', '02-Dec-2022')
- INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J@son', 'USA', 'NM 87111', 'White Residence', '06-Sep-2023')
- INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('Steph4n', 'Canada', 'K1A 0A6', 'House of Commons', '05-Apr-2020')
- INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J3ssica', 'Canada', 'V6T 1Z4', 'UBC Science', '19-Oct-2023')
- INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('R4ch3l', 'UK', 'SW1A 1BQ', 'Buckingham Palace', '01-Jan-2019')
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('B0b', 'USA', 'NM 87111', 'White Residence', TO_DATE('02-Dec-2022', 'DD-Mon-YY'))
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J@son', 'USA', 'NM 87111', 'White Residence', TO_DATE('06-Sep-2023', 'DD-Mon-YY'))
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('Steph4n', 'Canada', 'K1A 0A6', 'House of Commons', TO_DATE('05-Apr-2020', 'DD-Mon-YY'))
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('J3ssica', 'Canada', 'V6T 1Z4', 'UBC Science', TO_DATE('19-Oct-2023', 'DD-Mon-YY'))
+ INTO PlayerVisitedPokestop(PlayerUsername, PokestopCountry, PokestopPostalCode, PokestopName, VisitedDate) VALUES ('R4ch3l', 'UK', 'SW1A 1BQ', 'Buckingham Palace', TO_DATE('01-Jan-2019', 'DD-Mon-YY'))
 SELECT 1 FROM DUAL;
 
 INSERT ALL
@@ -592,10 +592,10 @@ INSERT ALL
 SELECT 1 FROM DUAL;
 
 INSERT ALL
- INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'V6T 1Z4', 'UBC Science', '11-Oct-2023', 'Default')
- INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'K1A 0A6', 'House of Commons', '30-Oct-2018', 'Halloween 2018')
- INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Arlo', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', '22-Jul-2023', 'Go Fest 2023 Fascinating Facets')
- INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Balloon Grunt', 'USA', 'NM 87111', 'White Residence', '20-Feb-2021', 'All-in-One 151')
- INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Professor Oak', 'UK', 'SW1A 1BQ', 'Buckingham Palace', '04-Nov-2023', 'City Safari 2023')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'V6T 1Z4', 'UBC Science', TO_DATE('11-Oct-2023', 'DD-Mon-YY'), 'Default')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Male Grunt', 'Canada', 'K1A 0A6', 'House of Commons', TO_DATE('30-Oct-2018', 'DD-Mon-YY'), 'Halloween 2018')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Arlo', 'Canada', 'V0N 1B4', 'Blackcomb Guest Services', TO_DATE('22-Jul-2023', 'DD-Mon-YY'), 'Go Fest 2023 Fascinating Facets')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Balloon Grunt', 'USA', 'NM 87111', 'White Residence', TO_DATE('20-Feb-2021', 'DD-Mon-YY'), 'All-in-One 151')
+ INTO NPCSighting(NPCName, PokestopCountry, PokestopPostalCode, PokestopName, SightingDate, EventName) VALUES ('Professor Oak', 'UK', 'SW1A 1BQ', 'Buckingham Palace', TO_DATE('04-Nov-2023', 'DD-Mon-YY'), 'City Safari 2023')
 SELECT 1 FROM DUAL;
 
