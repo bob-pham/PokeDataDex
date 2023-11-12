@@ -1,5 +1,5 @@
 setup_script="./src/database/pokemon.sql"
-styles="./src/frontend/src/styles/styles.css"
+styles="./src/backend/styles/styles.css"
 host="dbhost.students.cs.ubc.ca:1522/stu"
 
 # backend files
