@@ -19,9 +19,21 @@
 <html>
     <head>
         <title>PokeDataDex</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="icon" href="assets/logo.png" sizes="16x16" type="image.png">
+        <style>
+            <?php include 'styles/styles.css'; ?>
+        </style>
     </head>
 
-    <body>
+    <body class="background">
+        <div class="header">
+          <h1 class="header-text">PokeDataDex</h1>
+          <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
+        </div>
+        <h1>These are all TODO, they're hooked up to the database but kind of meaningless</h1>
         <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 

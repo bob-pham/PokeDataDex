@@ -4,7 +4,8 @@ host="dbhost.students.cs.ubc.ca:1522/stu"
 
 # backend files
 main="./src/backend/PokeDataDex.php"
-
+backend="./src/backend/"
+dst="$HOME/public_html/"
 prompt_pass=0
 
 if [[ -v "ORACLE_USER" && -v "ORACLE_PSSWD" ]]; then
@@ -27,24 +28,27 @@ fi
 
 echo "Copying files to public dir..."
 
+# Loop through files in the destination directory
+for dest_item in "$dst"/*; do
+  dest_item_name=$(basename "$dest_item")
+  # Check if there is a corresponding item in the source directory
+  if [ -e "$backend/$dest_item_name" ]; then
+    if [ -d "$dest_item" ]; then
+      rm -rf "$dest_item"
+    else
+      rm -f "$dest_item"
+    fi
+  fi
+done
+
+cp -urf "$backend"/* "$dst"
+
 if [ -e "$main" ]; then
   curr_file="$HOME/public_html/PokeDataDex.php"
-  rm -f "$curr_file"
-  cp "$main" "$curr_file"
-  echo "Copied $main to $curr_file"
   sed -i "s/ORACLE_USER/'$ORACLE_USER'/g" "$curr_file" 
   sed -i "s/ORACLE_PSSWD/'$ORACLE_PSSWD'/g" "$curr_file" 
 else
   echo "ERROR: could find $main"
-fi
-
-if [ -e "$styles" ]; then
-  curr_file="$HOME/public_html/styles.css"
-  rm -f "$curr_file"
-  cp "$styles" "$curr_file"
-  echo "Copied $styles to $curr_file"
-else
-  echo "ERROR: could find $styles"
 fi
 
 if [ -e "$setup_script" ]; then
