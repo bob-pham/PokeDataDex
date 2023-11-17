@@ -38,3 +38,7 @@
   margin: 5%;
   font-size: 2rem;
 }
+
+.hide{
+  display:none;
+}
