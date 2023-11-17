@@ -4,6 +4,7 @@ host="dbhost.students.cs.ubc.ca:1522/stu"
 
 # backend files
 main="./src/backend/PokeDataDex.php"
+util="./src/backend/util.php"
 backend="./src/backend/"
 dst="$HOME/public_html/"
 prompt_pass=0
@@ -50,6 +51,15 @@ if [ -e "$main" ]; then
 else
   echo "ERROR: could find $main"
 fi
+
+if [ -e "$util" ]; then
+  curr_file="$HOME/public_html/util.php"
+  sed -i "s/ORACLE_USER/'$ORACLE_USER'/g" "$curr_file" 
+  sed -i "s/ORACLE_PSSWD/'$ORACLE_PSSWD'/g" "$curr_file" 
+else
+  echo "ERROR: could find $main"
+fi
+
 
 if [ -e "$setup_script" ]; then
   sqlplus -S "$ORACLE_USER/$ORACLE_PSSWD@stu" <<EOF
