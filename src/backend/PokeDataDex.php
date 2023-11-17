@@ -34,8 +34,7 @@
           <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
         </div>
         <?php 
-          include "./Select.php";
-          echo getSelectUI();
+          include("./Select.php");
         ?>
         <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
@@ -49,8 +48,7 @@
         <hr />
 
         <?php
-          include "./TableEdit.php";
-          echo getTableEditUI();
+          include("./TableEdit.php");
         ?>
 
         <hr />
