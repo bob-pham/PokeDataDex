@@ -75,74 +75,180 @@
 
         function handleResetRequest() {
             global $db_conn;
-            // Drop old table
-            executePlainSQL("DROP TABLE Player");
-
-            // Create new table
-            echo "<br> creating new table <br>";
-            executePlainSQL("CREATE TABLE Player (id int PRIMARY KEY, name char(30))");
+            // Drop old tables
+            foreach (['Player', 'Item', 'Pokemon'] as $tablename) {
+                executePlainSQL("DROP TABLE $tablename CASCADE CONSTRAINTS");
+            }
+            // Create new tables
+            executePlainSQL("CREATE TABLE Player(
+                Username CHAR(15) PRIMARY KEY,
+                XP INTEGER NOT NULL,
+                TeamName CHAR(8) NOT NULL,
+                FOREIGN KEY (TeamName)
+                    REFERENCES Team(Name)
+                    ON DELETE CASCADE,
+                FOREIGN KEY (XP)
+                    REFERENCES PlayerXPLevel(XP)
+                    ON DELETE CASCADE
+            )");
+            executePlainSQL("CREATE TABLE Item(
+                Name CHAR(30) PRIMARY KEY,
+                Cost INTEGER,
+                Effect CHAR(100),
+                FOREIGN KEY (Effect)
+                    REFERENCES ItemEffectType(Effect)
+                    ON DELETE CASCADE
+            )");
+            executePlainSQL("CREATE TABLE Pokemon(
+                ID INTEGER PRIMARY KEY,
+                SpeciesName CHAR(20) NOT NULL,
+                CP INTEGER NOT NULL,
+                Distance INTEGER,
+                Nickname CHAR(15),
+                GymCountry CHAR(50),
+                GymPostalCode CHAR(10),
+                GymName CHAR(50),
+                StationedAtDate DATE,
+                FoundCountry CHAR(50),
+                FoundPostalCode CHAR(10),
+                FoundName CHAR(50),
+                FOREIGN KEY (GymCountry, GymPostalCode, GymName)
+                    REFERENCES Gym(Country, PostalCode, Name)
+                    ON DELETE CASCADE,
+                FOREIGN KEY (FoundCountry, FoundPostalCode, FoundName)
+                    REFERENCES Location(Country, PostalCode, Name)
+                    ON DELETE CASCADE,
+                FOREIGN KEY (SpeciesName)
+                    REFERENCES PokemonSpeciesTypes(SpeciesName)
+                    ON DELETE CASCADE,
+                FOREIGN KEY (SpeciesName, CP)
+                    REFERENCES PokemonSpeciesCP(SpeciesName, CP)
+                    ON DELETE CASCADE
+            )");
             OCICommit($db_conn);
         }
 
-        function handleInsertRequest() {
+        function handleInsertPlayerRequest() {
             global $db_conn;
+            $username = "'" . $_POST['insertPlayerUsername'] . "'";
+            $xp = $_POST['insertPlayerXP'];
+            $teamname = "'" . $_POST['insertPlayerTeamName'] . "'";
+            $level = $_POST['insertPlayerLevel'];
 
-            //Getting the values from user and insert data into the table
-            $tuple = array (
-                ":bind1" => $_POST['insNo'],
-                ":bind2" => $_POST['insName']
-            );
+            $values = valuesJoin([$xp, $level]);
+            executePlainSQL("INSERT INTO PlayerXPLevel VALUES ($values)");
+            $values = valuesJoin([$username, $xp, $teamname]);
+            executePlainSQL("INSERT INTO Player VALUES ($values)");
+            OCICommit($db_conn);
+        }
 
-            $alltuples = array (
-                $tuple
-            );
+        function handleInsertItemRequest() {
+            global $db_conn;
+            $name = "'" . $_POST['insertItemName'] . "'";
+            $cost = $_POST['insertItemCost'];
+            $effect = "'" . $_POST['insertItemEffect'] . "'";
+            $type = "'" . $_POST['insertItemType'] . "'";
+            $uses = $_POST['insertItemUses'];
 
-            executeBoundSQL("insert into Player values (:bind1, :bind2)", $alltuples);
+            $values = valuesJoin([$type, $uses]);
+            executePlainSQL("INSERT INTO ItemTypeUses VALUES ($values)");
+            $values = valuesJoin([$effect, $type]);
+            executePlainSQL("INSERT INTO ItemEffectType VALUES ($values)");
+            $values = valuesJoin([$name, $cost, $effect]);
+            executePlainSQL("INSERT INTO Item VALUES ($values)");
+            OCICommit($db_conn);
+        }
+
+        function handleInsertPokemonRequest() {
+            global $db_conn;
+            $id = $_POST['insertPokemonID'];
+            $speciesname = "'" . $_POST['insertPokemonSpeciesName'] . "'";
+            $cp = $_POST['insertPokemonCP'];
+            $distance = $_POST['insertPokemonDistance'];
+            $nickname =  "'" . $_POST['insertPokemonNickname'] . "'";
+            $type1 = "'" . $_POST['insertPokemonType1'] . "'";
+            $type2 = "'" . $_POST['insertPokemonType2'] . "'";
+            $hp = $_POST['insertPokemonHP'];
+            $attack = $_POST['insertPokemonAttack'];
+            $gymcountry = "'" . $_POST['insertPokemonGymCountry'] . "'";
+            $gympostalcode = "'" . $_POST['insertPokemonGymPostalCode'] . "'";
+            $gymname = "'" . $_POST['insertPokemonGymName'] . "'";
+            $stationeddate = "'" . $_POST['insertPokemonStationedDate'] . "'";
+            $foundcountry = "'" . $_POST['insertPokemonFoundCountry'] . "'";
+            $foundpostalcode = "'" . $_POST['insertPokemonFoundPostalCode'] . "'";
+            $foundname = "'" . $_POST['insertPokemonFoundName'] . "'";
+
+            $values = valuesJoin([$speciesname, $type1, $type2]);
+            executePlainSQL("INSERT INTO PokemonSpeciesTypes VALUES ($values)");
+            $values = valuesJoin([$speciesname, $cp, $attack, $hp]);
+            executePlainSQL("INSERT INTO PokemonSpeciesCP VALUES ($values)");
+            $values = valuesJoin([
+                $id, $speciesname, $cp, $distance, $nickname,
+                $gymcountry, $gympostalcode, $gymname, $stationeddate,
+                $foundcountry, $foundpostalcode, $foundname
+            ]);
+            executePlainSQL("INSERT INTO Pokemon VALUES ($values)");
+            OCICommit($db_conn);
+        }
+
+        function handleDeletePlayerRequest() {
+            global $db_conn;
+            $username = $_POST['deletePlayerUsername'];
+            executePlainSQL("DELETE FROM Player WHERE Username = '$username'");
+            OCICommit($db_conn);
+        }
+
+        function handleDeleteItemRequest() {
+            global $db_conn;
+            $name = $_POST['deleteItemName'];
+            executePlainSQL("DELETE FROM Item WHERE Name = '$name'");
+            OCICommit($db_conn);
+        }
+
+        function handleDeletePokemonRequest() {
+            global $db_conn;
+            $id = $_POST['deletePokemonID'];
+            executePlainSQL("DELETE FROM Pokemon WHERE ID = '$id'");
             OCICommit($db_conn);
         }
 
         function handleCountRequest() {
             global $db_conn;
-
-            $result = executePlainSQL("SELECT Count(*) FROM Player");
-
-            if (($row = oci_fetch_row($result)) != false) {
-                echo "<br> The number of tuples in Player: " . $row[0] . "<br>";
-            }
-        }
-
-        // HANDLE ALL POST ROUTES
-	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
-        function handlePOSTRequest() {
-            if (connectToDB()) {
-                if (array_key_exists('resetTablesRequest', $_POST)) {
-                    handleResetRequest();
-                } else if (array_key_exists('updateQueryRequest', $_POST)) {
-                    handleUpdateRequest();
-                } else if (array_key_exists('insertQueryRequest', $_POST)) {
-                    handleInsertRequest();
+            $tables = ["Player", "Item", "Pokemon"];
+            foreach ($tables as $table) {
+                $result = executePlainSQL("SELECT Count(*) FROM $table");
+                if (($row = oci_fetch_row($result)) != false) {
+                    echo "<br> The number of tuples in $table: " . $row[0] . "<br>";
                 }
-
-                disconnectFromDB();
             }
         }
 
-        // HANDLE ALL GET ROUTES
-	// A better coding practice is to have one method that reroutes your requests accordingly. It will make it easier to add/remove functionality.
-        function handleGETRequest() {
-          if (connectToDB()) {
-            if (array_key_exists('countTuples', $_GET)) {
-              handleCountRequest();
+        function handleRequests($requests, $method) {
+            foreach (array_keys($requests) as $req) {
+                if (isset($method[$req])) {
+                    if (connectToDB()) {
+                        $requests[$req]();
+                        disconnectFromDB();
+                    }
+                }
             }
-          disconnectFromDB();
-          }
         }
 
-		if (isset($_POST['reset']) || isset($_POST['updateSubmit']) || isset($_POST['insertSubmit'])) {
-            handlePOSTRequest();
-        } else if (isset($_GET['countTupleRequest'])) {
-            handleGETRequest();
+        $post_requests = [
+            'reset' => 'handleResetRequest'
+        ];
+        foreach (["Insert", "Update", "Delete"] as $op) {
+            foreach (["Player", "Item", "Pokemon"] as $table) {
+                $post_requests[strtolower($op) . $table . "Submit"] = 'handle' . "$op$table" . 'Request';
+            }
         }
+        $get_requests = [
+            'countTupleRequest' => 'handleCountRequest'
+        ];
+
+        handleRequests($post_requests, $_POST);
+        handleRequests($get_requests, $_GET);
+
 		?>
 	</body>
 </html>

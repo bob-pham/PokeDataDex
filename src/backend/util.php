@@ -65,6 +65,15 @@ See the sample code below for how this function is used */
   }
 }
 
+function valuesJoin($values) {
+  for ($idx = 0; $idx < sizeof($values); $idx++) {
+    if ($values[$idx] === "" || $values[$idx] === "''") {
+      $values[$idx] = 'NULL';
+    }
+  }
+  return join(', ', $values);
+}
+
 function printResult($result) { //prints results from a select statement
   echo "<br>Retrieved data from table Player:<br>";
   echo "<table>";

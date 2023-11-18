@@ -9,34 +9,40 @@
     </select>
   </form>
   <form method="POST" action="PokeDataDex.php">
-    <input type="hidden" id="insertQueryRequest" name="insertQueryRequest">
+    <input type="hidden" id="insertRequest" name="insertRequest">
     <div class="hide" id="insert-player">
       Username: <input type="text" name="insertPlayerUsername"></input><br />
       XP: <input type="text" name="insertPlayerXP"></input><br />
       Team Name: <input type="text" name="insertPlayerTeamName"></input><br />
-
-      <input type="submit" value="Insert" name="insertSubmit"></p>
+      Level: <input type="text" name="insertPlayerLevel"></input><br />
+  <input type="submit" value="Insert" name="insertPlayerSubmit"></p>
   </div>
   <div class="hide" id="insert-item">
     Name: <input type="text" name="insertItemName"></input><br />
-    Cost: <input type="text" name="insertItemCost"></input><br />
+    Cost (optional): <input type="text" name="insertItemCost"></input><br />
     Effect: <input type="text" name="insertItemEffect"></input><br />
-  <input type="submit" value="Insert" name="insertSubmit"></p>
+    Type: <input type="text" name="insertItemType"></input><br />
+    Uses (optional): <input type="text" name="insertItemUses"></input><br />
+  <input type="submit" value="Insert" name="insertItemSubmit"></p>
   </div>
   <div class="hide" id="insert-pokemon">
     ID: <input type="text" name="insertPokemonID"></input><br />
     Species Name: <input type="text" name="insertPokemonSpeciesName"></input><br />
-    Combat Score (CP): <input type="text" name="insertPokemonCP"></input><br />
-    Distance: <input type="text" name="insertPokemonDistance"></input><br />
-    Nickname: <input type="text" name="insertPokemonNickname"></input><br />
-    Gym Country: <input type="text" name="insertPokemonGymCountry"></input><br />
-    Gym Postal Code: <input type="text" name="insertPokemonGymPostalCode"></input><br />
-    Gym Name: <input type="text" name="insertPokemonGymName"></input><br />
-    Stationed at Date: <input type="text" name="insertPokemonStationedDate"></input><br />
-    Found Country: <input type="text" name="insertPokemonFoundCountry"></input><br />
-    Found Postal Code: <input type="text" name="insertPokemonFoundPostalCode"></input><br />
-    Found Name: <input type="text" name="insertPokemonFoundName"></input><br />
-    <input type="submit" value="Insert" name="insertSubmit"></p>
+    Combat Score: <input type="text" name="insertPokemonCP"></input><br />
+    Distance (optional): <input type="text" name="insertPokemonDistance"></input><br />
+    Nickname (optional): <input type="text" name="insertPokemonNickname"></input><br />
+    Type1: <input type="text" name="insertPokemonType1"></input><br />
+    Type2 (optional): <input type="text" name="insertPokemonType2"></input><br />
+    Health Points: <input type="text" name="insertPokemonHP"></input><br />
+    Attack: <input type="text" name="insertPokemonAttack"></input><br />
+    Gym Country (optional): <input type="text" name="insertPokemonGymCountry"></input><br />
+    Gym Postal Code (optional): <input type="text" name="insertPokemonGymPostalCode"></input><br />
+    Gym Name (optional): <input type="text" name="insertPokemonGymName"></input><br />
+    Stationed at Date (optional): <input type="text" name="insertPokemonStationedDate"></input><br />
+    Found Country (optional): <input type="text" name="insertPokemonFoundCountry"></input><br />
+    Found Postal Code (optional): <input type="text" name="insertPokemonFoundPostalCode"></input><br />
+    Found Name (optional): <input type="text" name="insertPokemonFoundName"></input><br />
+    <input type="submit" value="Insert" name="insertPokemonSubmit"></p>
   </div>
   </form>
   <hr />
@@ -52,7 +58,7 @@
   </form>
 
   <form method="POST" action="PokeDataDex.php">
-    <input type="hidden" id="updateQueryRequest" name="updateQueryRequest">
+    <input type="hidden" id="updateRequest" name="updateRequest">
     <div class="hide" id="update-player">
     Username: <input type="text" name="updatePlayerUsername"></input><br />
     XP: <input type="text" name="updatePlayerXP"></input><br />
@@ -95,18 +101,18 @@
     <p>The values are case sensitive and if you enter in the wrong case, the delete statement will not do anything.</p>
 
   <form method="POST" action="PokeDataDex.php">
-    <input type="hidden" id="deleteQueryRequest" name="deleteQueryRequest">
+    <input type="hidden" id="deleteRequest" name="deleteRequest">
     <div class="hide" id="delete-player">
       Username: <input type="text" name="deletePlayerUsername"></input><br />
-      <input type="submit" value="Delete" name="deleteSubmit"></p>
+      <input type="submit" value="Delete" name="deletePlayerSubmit"></p>
     </div>
     <div class="hide" id="delete-item">
       Name: <input type="text" name="deleteItemName"></input><br />
-      <input type="submit" value="Delete" name="deleteSubmit"></p>
+      <input type="submit" value="Delete" name="deleteItemSubmit"></p>
     </div>
     <div class="hide" id="delete-pokemon">
       ID: <input type="text" name="deletePokemonID"></input><br />
-      <input type="submit" value="Delete" name="deleteSubmit"></p>
+      <input type="submit" value="Delete" name="deletePokemonSubmit"></p>
     </div>
   </form>
 </div>
