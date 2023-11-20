@@ -22,7 +22,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="icon" href="assets/logo.png" sizes="16x16" type="image.png">
+        <link rel="icon" href="./assets/logo.png" sizes="16x16" type="image.png">
         <style>
             <?php include 'styles/styles.css'; ?>
         </style>
@@ -33,8 +33,11 @@
           <h1 class="header-text">PokeDataDex</h1>
           <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
         </div>
-        <?php 
-          include("./Select.php");
+        <?php
+          include("./ViewTables.php");
+        ?>
+        <?php
+          include("./Leaderboard.php");
         ?>
         <h2>Reset</h2>
         <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
@@ -50,14 +53,6 @@
         <?php
           include("./TableEdit.php");
         ?>
-
-        <hr />
-
-        <h2>Count the Tuples in DemoTable</h2>
-        <form method="GET" action="PokeDataDex.php"> <!--refresh page when submitted-->
-            <input type="hidden" id="countTupleRequest" name="countTupleRequest">
-            <input type="submit" name="countTuples"></p>
-        </form>
 
         <?php
         include_once("./util.php");
@@ -212,17 +207,6 @@
             OCICommit($db_conn);
         }
 
-        function handleCountRequest() {
-            global $db_conn;
-            $tables = ["Player", "Item", "Pokemon"];
-            foreach ($tables as $table) {
-                $result = executePlainSQL("SELECT Count(*) FROM $table");
-                if (($row = oci_fetch_row($result)) != false) {
-                    echo "<br> The number of tuples in $table: " . $row[0] . "<br>";
-                }
-            }
-        }
-
         function handleRequests($requests, $method) {
             foreach (array_keys($requests) as $req) {
                 if (isset($method[$req])) {
@@ -243,7 +227,6 @@
             }
         }
         $get_requests = [
-            'countTupleRequest' => 'handleCountRequest'
         ];
 
         handleRequests($post_requests, $_POST);

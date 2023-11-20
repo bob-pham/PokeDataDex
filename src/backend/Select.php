@@ -1,5 +1,6 @@
-<div class="selectUI">
-  <form method="GET" action="Pokemon.php">
+<div class="query">
+  <form method="GET" action="PokeDataDex.php">
+    <input type="hidden" id="selectUIRequest" name="selectUIRequest">
     <label>Main</label>
     <select name="main" id="main">
       <option value="Player">Player</option>
@@ -24,18 +25,29 @@
       <option value="Species">Species</option>
       <option value="Battle">Battle</option>
     </select>
-    <label>Filters</label>
-    <select name="filter", id="filter">
-      <option value="None">N/A</option>
-      <option value="Min">Min</option>
-      <option value="Max">Max</option>
-      <option value="Avg">Avg</option>
-      <option value="Count">Count</option>
-    </select>
     <input type="submit" value="Submit">
   </form>
-</div>
 <?php
 include_once("./util.php");
+
+function handleSelectUIRequest() {
+  // These are for basic queries
+  global $db_conn;
+  $from = $_GET["main"];
+  if ($_GET["secondary"] !== "None") {
+    $from = $from . "" . $_GET["secondary"];
+    echo "<h1>this executed</h1>";
+  }
+  $result = executePlainSQL("SELECT * FROM " . $_GET["main"]);
+  printResult($result);
+}
+
+if (isset($_GET["selectUIRequest"])) {
+  if ($db_conn == NULL) {
+    connectToDB();
+  }
+  handleSelectUIRequest();
+}
+
 ?>
-          
+</div>

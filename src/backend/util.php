@@ -75,14 +75,31 @@ function valuesJoin($values) {
 }
 
 function printResult($result) { //prints results from a select statement
-  echo "<br>Retrieved data from table Player:<br>";
+  // echo "<br>Retrieved data from table Player:<br>";
+  echo '<div class="result-table">';
   echo "<table>";
-  echo "<tr><th>ID</th><th>Name</th></tr>";
+  $header = "<tr>";
 
-  while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-    "<tr><td>" . $row["ID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
+  $num_columns = OCI_Num_Fields($result);
+  for ($i = 1; $i <= $num_columns; $i++) {
+    $header = $header . "<th>" . OCI_Field_Name($result, $i) . "</th>";
+  }
+  $header = $header . "</tr>";
+  echo $header;
+    
+  while (($row = OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) != false) {
+    $temp_row = "";
+    foreach ($row as $cell) {
+      if ($cell === null) {
+        $temp_row = $temp_row . "<td>N/A</td>";
+      } else {
+        $temp_row = $temp_row . "<td>" . $cell . "</td>";
+      }
+    }
+    echo "<tr>" . $temp_row . "</tr>";
   }
   echo "</table>";
+  echo '</div>';
 }
 
 function connectToDB() {
