@@ -74,6 +74,22 @@ function valuesJoin($values) {
   return join(', ', $values);
 }
 
+function valuesJoinByName($values, $names) {
+  for ($idx = 0; $idx < sizeof($values); $idx++) {
+    if ($values[$idx] === "" || $values[$idx] === "''") {
+      $values[$idx] = 'NULL';
+    }
+  }
+  $res = "";
+  for ($idx = 0; $idx < sizeof($values); $idx++) {
+    $res .= "$names[$idx] = $values[$idx]";
+    if ($idx !== sizeof($values) - 1) {
+      $res .= ", ";
+    }
+  }
+  return $res;
+}
+
 function printResult($result) { //prints results from a select statement
   // echo "<br>Retrieved data from table Player:<br>";
   echo '<div class="result-table">';

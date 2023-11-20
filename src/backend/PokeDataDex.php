@@ -57,17 +57,6 @@
         <?php
         include_once("./util.php");
 
-        function handleUpdateRequest() {
-            global $db_conn;
-
-            $old_name = $_POST['oldName'];
-            $new_name = $_POST['newName'];
-
-            // you need the wrap the old name and new name values with single quotations
-            executePlainSQL("UPDATE Player SET name='" . $new_name . "' WHERE name='" . $old_name . "'");
-            OCICommit($db_conn);
-        }
-
         function handleResetRequest() {
             global $db_conn;
             // Drop old tables
@@ -120,90 +109,6 @@
                     REFERENCES PokemonSpeciesCP(SpeciesName, CP)
                     ON DELETE CASCADE
             )");
-            OCICommit($db_conn);
-        }
-
-        function handleInsertPlayerRequest() {
-            global $db_conn;
-            $username = "'" . $_POST['insertPlayerUsername'] . "'";
-            $xp = $_POST['insertPlayerXP'];
-            $teamname = "'" . $_POST['insertPlayerTeamName'] . "'";
-            $level = $_POST['insertPlayerLevel'];
-
-            $values = valuesJoin([$xp, $level]);
-            executePlainSQL("INSERT INTO PlayerXPLevel VALUES ($values)");
-            $values = valuesJoin([$username, $xp, $teamname]);
-            executePlainSQL("INSERT INTO Player VALUES ($values)");
-            OCICommit($db_conn);
-        }
-
-        function handleInsertItemRequest() {
-            global $db_conn;
-            $name = "'" . $_POST['insertItemName'] . "'";
-            $cost = $_POST['insertItemCost'];
-            $effect = "'" . $_POST['insertItemEffect'] . "'";
-            $type = "'" . $_POST['insertItemType'] . "'";
-            $uses = $_POST['insertItemUses'];
-
-            $values = valuesJoin([$type, $uses]);
-            executePlainSQL("INSERT INTO ItemTypeUses VALUES ($values)");
-            $values = valuesJoin([$effect, $type]);
-            executePlainSQL("INSERT INTO ItemEffectType VALUES ($values)");
-            $values = valuesJoin([$name, $cost, $effect]);
-            executePlainSQL("INSERT INTO Item VALUES ($values)");
-            OCICommit($db_conn);
-        }
-
-        function handleInsertPokemonRequest() {
-            global $db_conn;
-            $id = $_POST['insertPokemonID'];
-            $speciesname = "'" . $_POST['insertPokemonSpeciesName'] . "'";
-            $cp = $_POST['insertPokemonCP'];
-            $distance = $_POST['insertPokemonDistance'];
-            $nickname =  "'" . $_POST['insertPokemonNickname'] . "'";
-            $type1 = "'" . $_POST['insertPokemonType1'] . "'";
-            $type2 = "'" . $_POST['insertPokemonType2'] . "'";
-            $hp = $_POST['insertPokemonHP'];
-            $attack = $_POST['insertPokemonAttack'];
-            $gymcountry = "'" . $_POST['insertPokemonGymCountry'] . "'";
-            $gympostalcode = "'" . $_POST['insertPokemonGymPostalCode'] . "'";
-            $gymname = "'" . $_POST['insertPokemonGymName'] . "'";
-            $stationeddate = "'" . $_POST['insertPokemonStationedDate'] . "'";
-            $foundcountry = "'" . $_POST['insertPokemonFoundCountry'] . "'";
-            $foundpostalcode = "'" . $_POST['insertPokemonFoundPostalCode'] . "'";
-            $foundname = "'" . $_POST['insertPokemonFoundName'] . "'";
-
-            $values = valuesJoin([$speciesname, $type1, $type2]);
-            executePlainSQL("INSERT INTO PokemonSpeciesTypes VALUES ($values)");
-            $values = valuesJoin([$speciesname, $cp, $attack, $hp]);
-            executePlainSQL("INSERT INTO PokemonSpeciesCP VALUES ($values)");
-            $values = valuesJoin([
-                $id, $speciesname, $cp, $distance, $nickname,
-                $gymcountry, $gympostalcode, $gymname, $stationeddate,
-                $foundcountry, $foundpostalcode, $foundname
-            ]);
-            executePlainSQL("INSERT INTO Pokemon VALUES ($values)");
-            OCICommit($db_conn);
-        }
-
-        function handleDeletePlayerRequest() {
-            global $db_conn;
-            $username = $_POST['deletePlayerUsername'];
-            executePlainSQL("DELETE FROM Player WHERE Username = '$username'");
-            OCICommit($db_conn);
-        }
-
-        function handleDeleteItemRequest() {
-            global $db_conn;
-            $name = $_POST['deleteItemName'];
-            executePlainSQL("DELETE FROM Item WHERE Name = '$name'");
-            OCICommit($db_conn);
-        }
-
-        function handleDeletePokemonRequest() {
-            global $db_conn;
-            $id = $_POST['deletePokemonID'];
-            executePlainSQL("DELETE FROM Pokemon WHERE ID = '$id'");
             OCICommit($db_conn);
         }
 
