@@ -53,7 +53,7 @@
       <option value="update-player">Player </option>
       <option value="update-item">Item </option>
       <option value="update-pokemon">Pokemon </option>
-    </select
+  </select>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
   </form>
 
@@ -63,27 +63,34 @@
     Username: <input type="text" name="updatePlayerUsername"></input><br />
     XP: <input type="text" name="updatePlayerXP"></input><br />
     Team Name: <input type="text" name="updatePlayerTeamName"></input><br />
+    Level: <input type="text" name="updatePlayerLevel"></input><br />
     <input type="submit" value="Update" name="updateSubmit"></p>
     </div>
     <div class="hide" id="update-item">
       Name: <input type="text" name="updateItemName"></input><br />
-      Cost: <input type="text" name="updateItemCost"></input><br />
+      Cost (optional): <input type="text" name="updateItemCost"></input><br />
       Effect: <input type="text" name="updateItemEffect"></input><br />
+      Type: <input type="text" name="updateItemType"></input><br />
+      Uses (optional): <input type="text" name="updateItemUses"></input><br />
       <input type="submit" value="Update" name="updateSubmit"></p>
     </div>
     <div class="hide" id="update-pokemon">
       ID: <input type="text" name="updatePokemonID"></input><br />
       Species Name: <input type="text" name="updatePokemonSpeciesName"></input><br />
-      Combat Score (CP): <input type="text" name="updatePokemonCP"></input><br />
-      Distance: <input type="text" name="updatePokemonDistance"></input><br />
-      Nickname: <input type="text" name="updatePokemonNickname"></input><br />
-      Gym Country: <input type="text" name="updatePokemonGymCountry"></input><br />
-      Gym Postal Code: <input type="text" name="updatePokemonGymPostalCode"></input><br />
-      Gym Name: <input type="text" name="updatePokemonGymName"></input><br />
-      Stationed at Date: <input type="text" name="updatePokemonStationedDate"></input><br />
-      Found Country: <input type="text" name="updatePokemonFoundCountry"></input><br />
-      Found Postal Code: <input type="text" name="updatePokemonFoundPostalCode"></input><br />
-      Found Name: <input type="text" name="updatePokemonFoundName"></input><br />
+      Combat Score: <input type="text" name="updatePokemonCP"></input><br />
+      Distance (optional): <input type="text" name="updatePokemonDistance"></input><br />
+      Nickname (optional): <input type="text" name="updatePokemonNickname"></input><br />
+      Type1: <input type="text" name="updatePokemonType1"></input><br />
+      Type2 (optional): <input type="text" name="updatePokemonType2"></input><br />
+      Health Points: <input type="text" name="updatePokemonHP"></input><br />
+      Attack: <input type="text" name="updatePokemonAttack"></input><br />
+      Gym Country (optional): <input type="text" name="updatePokemonGymCountry"></input><br />
+      Gym Postal Code (optional): <input type="text" name="updatePokemonGymPostalCode"></input><br />
+      Gym Name (optional): <input type="text" name="updatePokemonGymName"></input><br />
+      Stationed at Date (optional): <input type="text" name="updatePokemonStationedDate"></input><br />
+      Found Country (optional): <input type="text" name="updatePokemonFoundCountry"></input><br />
+      Found Postal Code (optional): <input type="text" name="updatePokemonFoundPostalCode"></input><br />
+      Found Name (optional): <input type="text" name="updatePokemonFoundName"></input><br />
       <input type="submit" value="Update" name="updateSubmit"></p>
     </div>
     </form>
