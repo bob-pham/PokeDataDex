@@ -47,6 +47,7 @@ if (isset($_GET["selectUIRequest"])) {
     connectToDB();
   }
   handleSelectUIRequest();
+  disconnectFromDB();
 }
 
 ?>

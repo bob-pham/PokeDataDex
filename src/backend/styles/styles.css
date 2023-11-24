@@ -1,7 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap");
-
 :root {
   --headertxt: rgb(6, 143, 75);
+}
+
+select, input {
+  padding: 15px;
+  background: rgb(121,228,244);
+  background: linear-gradient(190deg, rgba(121,228,244,1) 0%, rgba(35,127,213,1) 100%); 
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 10px;
+}
+
+option {
+  background: gray;
 }
 
 .background {
@@ -59,7 +70,7 @@
 
 .result-table {
   font-family: "Pixelify Sans", sans-serif;
-  font-size: 2rem;
+  font-size: 0.5rem;
   place-self: center;
   display: grid;
   place-items: center;
@@ -70,11 +81,14 @@
 .result-table table,
 th,
 td {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
   border: 2px solid white;
   text-align: center;
 }
 
 .result-table th {
+  font-family: "Pixelify Sans", sans-serif;
   font-size: 3rem;
   font-weight: bold;
 }
@@ -84,10 +98,69 @@ td {
 }
 
 .subheader {
-  font-family: "Pixelify Sans", sans-serif;
-  font-size: 2rem;
+  font-family: "Montserrat", sans-serif !important;
+  font-size: 1rem;
+  display: grid;
+  place-items: center;
+  place-self: center;
+  color: blue;
+}
+
+.section {
   display: grid;
   place-items: center;
   place-self: center;
   color: var(--headertxt);
+  margin: 0;
+  padding: 0;
+  grid-column: 1;
 }
+
+.subsection {
+  display: grid;
+  place-items: center;
+  place-self: center;
+}
+
+.section div, h2 {
+  margin: 0;
+  padding: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3rem;
+}
+
+.section h1 {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 4rem;
+}
+
+.modify {
+  place-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--headertxt);
+  margin: 0;
+  padding: 0;
+  width: 90%;
+}
+
+.modify-item {
+  flex-direction: row;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: black;
+}
+
+.modify h4 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  color: black;
+}
+
+.modify p {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: black;
+}
+

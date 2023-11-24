@@ -1,5 +1,5 @@
 <div class="query">
-  <h3>View Database</h3>
+  <h2>View Database</h2>
   <form method="GET" action="PokeDataDex.php">
     <input type="hidden" id="viewTables" name="viewTables">
     <select name="tableToView" id="tableToView">

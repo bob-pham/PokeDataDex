@@ -118,6 +118,7 @@ if (isset($_GET["leaderboard"])) {
     default:
       break;
   }
+  disconnectFromDB();
 }
 ?>
 </div>

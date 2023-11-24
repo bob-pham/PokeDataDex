@@ -42,7 +42,7 @@ for dest_item in "$dst"/*; do
   fi
 done
 
-cp -urf "$backend"/* "$dst"
+cp -urf -a -p "$backend"/* "$dst"
 
 if [ -e "$main" ]; then
   curr_file="$HOME/public_html/PokeDataDex.php"
