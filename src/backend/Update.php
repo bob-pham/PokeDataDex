@@ -164,7 +164,7 @@ function handleUpdatePokemonRequest() {
 }
 
 foreach (["Player", "Item", "Pokemon"] as $table) {
-    handleRequests($_POST, "Update$table");
+    handleRequests($_POST, "update$table" . "Submit");
 }
 
 ?>

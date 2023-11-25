@@ -155,7 +155,7 @@ function handleInsertPokemonRequest() {
 }
 
 foreach (["Player", "Item", "Pokemon"] as $table) {
-    handleRequests($_POST, "Insert$table");
+    handleRequests($_POST, "insert$table" . "Submit");
 }
 
 ?>

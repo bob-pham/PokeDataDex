@@ -55,7 +55,7 @@ function handleDeletePokemonRequest() {
 }
 
 foreach (["Player", "Item", "Pokemon"] as $table) {
-    handleRequests($_POST, "Delete$table");
+    handleRequests($_POST, "delete$table" . "Submit");
 }
 
 ?>
