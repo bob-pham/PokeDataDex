@@ -93,11 +93,15 @@ td {
   font-weight: bold;
 }
 
-.result-table table {
+.result-table div {
   width: 80%;
   max-width: 80%;
-  height: 40%;
-  max-height: 40%;
+  height: 300px;
+  overflow: auto;
+}
+
+.result-table table {
+  border-collapse: collapse;
 }
 
 .subheader {
