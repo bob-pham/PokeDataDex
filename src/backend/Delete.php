@@ -30,9 +30,6 @@
     </div>
   </form>
   </div>
-  <?php
-  include_once("./Reset.php");
-  ?>
 <?php
 include_once("./util.php");
 
@@ -57,6 +54,9 @@ function handleDeletePokemonRequest() {
     OCICommit($db_conn);
 }
 
-handleRequests("Delete");
+foreach (["Player", "Item", "Pokemon"] as $table) {
+    handleRequests($_POST, "Delete$table");
+}
+
 ?>
 </div>

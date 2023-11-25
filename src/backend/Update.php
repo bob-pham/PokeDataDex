@@ -163,7 +163,9 @@ function handleUpdatePokemonRequest() {
     OCICommit($db_conn);
 }
 
-handleRequests("Update");
+foreach (["Player", "Item", "Pokemon"] as $table) {
+    handleRequests($_POST, "Update$table");
+}
 
 ?>
 </div>
