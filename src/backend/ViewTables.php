@@ -57,12 +57,7 @@ function viewTables() {
   printResult($result);
 }
 
-if (isset($_GET["viewTables"])) {
-  if ($db_conn == NULL) {
-    connectToDB();
-  }
-  viewTables();
-}
+handleRequests($_GET, "viewTables");
 
 ?>
 </div>

@@ -156,23 +156,22 @@ function disconnectFromDB() {
   OCILogoff($db_conn);
 }
 
-function getRequestArray($op) {
-  $requests = [];
-  foreach (["Player", "Item", "Pokemon"] as $table) {
-    $requests[strtolower($op) . $table . "Submit"] = 'handle' . "$op$table" . 'Request';
+function getRequestArray() {
+  $requests = ["viewTables" => "viewTables"];
+  foreach (["Insert", "Update", "Delete"] as $op) {
+    foreach (["Player", "Item", "Pokemon"] as $table) {
+      $requests[strtolower($op) . $table . "Submit"] = 'handle' . "$op$table" . 'Request';
+    }
   }
   return $requests;
 }
 
-function handleRequests($op) {
-  $requests = getRequestArray($op);
-
-  foreach (array_keys($requests) as $req) {
-    if (isset($method[$req])) {
-      if (connectToDB()) {
-        $requests[$req]();
-        disconnectFromDB();
-      }
+function handleRequests($method, $req) {
+  $requests = getRequestArray();
+  if (isset($method[$req])) {
+    if (connectToDB()) {
+      $requests[$req]();
+      disconnectFromDB();
     }
   }
 }

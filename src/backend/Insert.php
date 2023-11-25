@@ -154,7 +154,9 @@ function handleInsertPokemonRequest() {
     OCICommit($db_conn);
 }
 
-handleRequests("Insert");
+foreach (["Player", "Item", "Pokemon"] as $table) {
+    handleRequests($_POST, "Insert$table");
+}
 
 ?>
 </div>

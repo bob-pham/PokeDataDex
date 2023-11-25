@@ -93,6 +93,7 @@ function strongestPokemon() {
 }
 
 if (isset($_GET["leaderboard"])) {
+  global $db_conn;
   if ($db_conn == NULL) {
     connectToDB();
   }
