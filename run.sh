@@ -1,4 +1,5 @@
 setup_script="./src/database/pokemon.sql"
+more_inserts_script="./src/database/more_inserts.sql"
 styles="./src/backend/styles/styles.css"
 host="dbhost.students.cs.ubc.ca:1522/stu"
 
@@ -19,12 +20,12 @@ fi
 
 if [[ "$prompt_pass" == 0 ]]; then 
   read -p "Enter your cwl: " user
-  read -s -p "Enter your password (a[student num]): " password
+  read -s -p "Enter your student number: " password
 
   echo "Setting Environment variables for SQL server... Done"
   # will go away once you restart your shell
   export ORACLE_USER="ora_$user"
-  export ORACLE_PSSWD="$password"
+  export ORACLE_PSSWD="a$password"
 fi
 
 echo "Copying files to public dir..."
@@ -68,3 +69,9 @@ if [ -e "$setup_script" ]; then
 EOF
 fi
 
+if [ -e "$more_inserts_script" ]; then
+  sqlplus -S "$ORACLE_USER/$ORACLE_PSSWD@stu" <<EOF
+  @$more_inserts_script
+  quit;
+EOF
+fi
