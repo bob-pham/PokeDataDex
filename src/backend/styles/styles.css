@@ -95,6 +95,9 @@ td {
 
 .result-table table {
   width: 80%;
+  max-width: 80%;
+  height: 40%;
+  max-height: 40%;
 }
 
 .subheader {
