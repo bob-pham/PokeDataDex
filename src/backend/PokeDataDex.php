@@ -19,6 +19,9 @@
             include("./ViewTables.php");
           ?>
           <?php
+            include("./Select.php");
+          ?>
+          <?php
             include("./Leaderboard.php");
           ?>
         </div>
