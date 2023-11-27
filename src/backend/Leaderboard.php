@@ -1,8 +1,8 @@
 <div class="query">
   <h2>Leaderboards</h2>
-  <form method="GET" action="PokeDataDex.php">
+  <form method="GET" class="query-section" action="PokeDataDex.php">
     <input type="hidden" name="leaderboard" id="leaderboard">
-    <select name="leaderboardType" id="leaderboardType">
+    <select name="leaderboardType" id="leaderboardType" onChange="leaderboardInputToggle(value)">
       <option value="None">N/A</option>
       <option value="Highest Level">Players with Highest Level</option>
       <option value="Most Pokemon">Players with most Pokemon</option>
@@ -12,11 +12,20 @@
       <option value="All Missions">Players Who Completed All Missions</option>
       <option value="Team All Missions">Teams with Most Players Who Completed All Missions</option>
       <option value="Team with Battled Players">Teams with Most Players Who Done a Battle</option>
+      <option value="Player's Strongest Pokemon">Player's Strongest pokemon for each Type</option>
+      <option value="Teams with N Players">Teams with at least N players</option>
     </select>
-    <input type="text" name="valueName" default="None">
-    <label for="count">Max Rows:</label>
-    <input type="number" id="count" name="count" min="1" max="100" value="100">
-    <input type="submit" value="Submit">
+    <div class="query-input hide" id="value-input">
+      <label class="query-item query-label" id="value-input-label" for="valueName">FOO</label>
+      <input class="query-item query-input-box" type="text" id="valueName" name="valueName">
+      </div>
+    <div class="query-input hide" id="count-input">
+      <label class="query-item query-label" for="count">Max Rows:</label>
+      <input class="query-item query-input-box" type="number" id="count" name="count" min="1" max="100" value="100">
+    </div>
+    <div class="query-input hide" id="query-submit">
+      <input class="query-item" type="submit" value="Submit">
+    </div>
   </form>
 <?php
 include_once("./util.php");
@@ -107,7 +116,7 @@ function teamAllMissions() {
 }
 
 function teamWithBattledPlayers() {
-  $query = 
+  $query =
   "SELECT p.TeamName as \"Team \", COUNT(*) as \"# Players\"
   FROM Player p
   WHERE p.Username IN (SELECT DISTINCT pl.Username
@@ -116,6 +125,26 @@ function teamWithBattledPlayers() {
                            or pl.Username = b.PlayerUsername2))
   GROUP BY p.TeamName
   ORDER BY COUNT(*) DESC";
+
+  return $query;
+}
+
+function PlayersStrongestPokemon($playerUsername) {
+  $query =
+  "SELECT t.Type1 as \"First Type \", MAX(cp) as \"Combat Power\"
+  FROM Pokemon p, PokemonSpeciesTypes t, PlayerCapturedPokemon c
+  WHERE p.SpeciesName = t.SpeciesName AND p.ID = c.SpeciesID AND c.PlayerUsername = $playerUsername
+  GROUP BY t.Type1";
+
+  return $query;
+}
+
+function TeamsWithAtLeastNPlayers($n) {
+  $query =
+  "SELECT p.TeamName as \"Team \", COUNT(*) as \"# Players\"
+  FROM Player p
+  GROUP BY TeamName 
+  HAVING COUNT(*) > $n";
 
   return $query;
 }
@@ -149,6 +178,12 @@ if (isset($_GET["leaderboard"])) {
       break;
     case "Team with Battled Players":
       $query = teamWithBattledPlayers();
+      break;
+    case "Player's Strongest Pokemon":
+      $query = PlayersStrongestPokemon("'" . $_GET["valueName"] . "'");
+      break;
+    case "Teams with N Players":
+      $query = TeamsWithAtLeastNPlayers($_GET["valueName"]);
     default:
       break;
   }

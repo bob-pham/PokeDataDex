@@ -22,3 +22,24 @@ function hideAll(type) {
     document.getElementById(type + '-item').style.display="none";
     document.getElementById(type + '-pokemon').style.display="none";
 }
+
+function leaderboardInputToggle(choice) {
+    if (choice === "Player's Strongest Pokemon" || choice === "Teams with N Players") {
+        document.getElementById("value-input").style.display="flex";
+        document.getElementById("count-input").style.display="flex";
+        document.getElementById("query-submit").style.display="flex";
+        if (choice === "Player's Strongest Pokemon") {
+            document.getElementById('value-input-label').innerHTML = 'Player Username:';
+        } else if (choice === "Teams with N Players") {
+            document.getElementById('value-input-label').innerHTML = '# of Players:';
+        }
+    } else if (choice === "None") {
+        document.getElementById("value-input").style.display="none";
+        document.getElementById("count-input").style.display="none";
+        document.getElementById("query-submit").style.display="none";
+    } else {
+        document.getElementById("value-input").style.display="none";
+        document.getElementById("count-input").style.display="flex";
+        document.getElementById("query-submit").style.display="flex";
+    }
+}

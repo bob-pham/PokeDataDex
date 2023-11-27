@@ -64,6 +64,40 @@ option {
   font-size: 2rem;
 }
 
+.query-section {
+  place-self: center;
+  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--headertxt);
+  margin: 0;
+  padding: 0;
+}
+
+.query-input {
+  place-self: center;
+  place-items: center;
+}
+
+.query-item {
+  flex-direction: row;
+  margin: 2%;
+}
+
+.query-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  color: black;
+  text-align: right;
+  white-space: nowrap;
+  margin-right: 0;
+}
+
+.query-input-box {
+  width: 90%;
+}
+
 .hide {
   display: none;
 }
@@ -171,3 +205,6 @@ td {
   color: black;
 }
 
+img {
+  padding: 50px;
+}
