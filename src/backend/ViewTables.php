@@ -1,6 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PokeDataDex</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="icon" href="assets/logo.png" sizes="16x16" type="image.png">
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+    </head>
+    <body class="background">
+        <div class="header">
+          <h1 class="header-text">PokeDataDex</h1>
+          <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
+        </div>
+        <div class="section">
+          <h1 class="header-text">Home</h1>
+          <div>
+            <form action="PokeDataDex.php">
+              <input type="submit" value="Home">
+            </form>
+          </div>
+        </div>
+
+        <div class="section">
 <div class="query">
   <h2>View Database</h2>
-  <form method="GET" id="viewTablesForm" class="section" action="PokeDataDex.php">
+  <form method="GET" id="viewTablesForm" class="section" action="ViewTables.php">
     <input type="hidden" id="viewTables" name="viewTables">
     <?php
 include_once("./util.php");
@@ -59,7 +84,6 @@ function getUI() {
   $rows = getInputRows($table_names);
   echo $table_selector;
   echo $rows;
-
   disconnectFromDB();
 }
 
@@ -95,6 +119,10 @@ function viewTables() {
     }
   }
 
+  if (sizeof($columns_to_show) == 0) {
+    return;
+  }
+
   $query = "SELECT " . implode(", ", $columns_to_show) . " FROM $tableName";
   $result = executePlainSQL($query);
   printResult($result);
@@ -102,3 +130,9 @@ function viewTables() {
 handleRequests($_GET, "viewTables");
 ?>
 </div>
+  <div class="section">
+          <img src="assets/logo.png" type="image.png">
+        </div>
+  <script src="js/helper.js" defer></script>
+	</body>
+</html>
