@@ -133,7 +133,11 @@ function handleUpdatePlayerRequest() {
         return;
     }
     $values = valuesJoin([$xp, $level]);
-    if (!inputIsNull($xp) && !keysInTable('PlayerXpLevel', ["XP" => $xp])) {
+    if (!inputIsNull($xp) && !keysInTable('PlayerXPLevel', ["XP" => $xp])) {
+        if (inputIsNull($level)) {
+            alertUser("Level given Input for XP is unknown, Level must be specified");
+            return;
+        }
         executePlainSQL("INSERT INTO PlayerXPLevel VALUES ($values)");
     }
     if (!inputIsNull($teamname) && !keysInTable('Team', ['Name' => $teamname])) {
@@ -162,10 +166,18 @@ function handleUpdateItemRequest() {
     }
     $values = valuesJoin([$type, $uses]);
     if (!inputIsNull($type) && !keysInTable('ItemTypeUses', ["Type" => $type])) {
+        if (inputIsNull($uses)) {
+            alertUser("Uses given Input for Type is unknown, Uses must be specified");
+            return;
+        }
         executePlainSQL("INSERT INTO ItemTypeUses VALUES ($values)");
     }
     $values = valuesJoin([$effect, $type]);
     if (!inputIsNull($effect) && !keysInTable('ItemEffectType', ["Effect" => $effect])) {
+        if (inputIsNull($type)) {
+            alertUser("Type given Input for Effect is unknown, Type must be specified");
+            return;
+        }
         executePlainSQL("INSERT INTO ItemEffectType VALUES ($values)");
     }
     $values = valuesJoinByName([$cost, $effect], ["Cost", "Effect"]);
@@ -179,54 +191,62 @@ function handleUpdateItemRequest() {
 function handleUpdatePokemonRequest() {
     global $db_conn;
     try {
-        $id = parseInput($_POST['insertPokemonSelect'], 'int', 'ID');
-        $speciesname = parseInput($_POST['insertPokemonSpeciesName'], 'char_20', 'Species Name');
-        $cp = parseInput($_POST['insertPokemonCP'], 'int', 'Combat Score');
-        $distance = parseInput($_POST['insertPokemonDistance'], 'int', 'Distance', true);
-        $nickname = parseInput($_POST['insertPokemonNickname'], 'char_15', 'Nickname', true);
-        $type1 = parseInput($_POST['insertPokemonType1'], 'char_10', 'Type 1');
-        $type2 = parseInput($_POST['insertPokemonType2'], 'char_10', 'Type 2', true);
-        $hp = parseInput($_POST['insertPokemonHP'], 'int', 'Health Points');
-        $attack = parseInput($_POST['insertPokemonAttack'], 'int', 'Attack');
-        $gymcountry = parseInput($_POST['insertPokemonGymCountry'], 'char_50', 'Gym Country', true);
-        $gympostalcode = parseInput($_POST['insertPokemonGymPostalCode'], 'char_10', 'Gym Postal Code', true);
-        $gymname = parseInput($_POST['insertPokemonGymName'], 'char_50', 'Gym Name', true);
-        $stationeddate = parseInput($_POST['insertPokemonStationedDate'], 'date', 'Stationed at Date', true);
-        $foundcountry = parseInput($_POST['insertPokemonFoundCountry'], 'char_50', 'Found Country', true);
-        $foundpostalcode = parseInput($_POST['insertPokemonFoundPostalCode'], 'char_10', 'Found Postal Code', true);
-        $foundname = parseInput($_POST['insertPokemonFoundName'], 'char_50', 'Found Name', true);
+        $id = parseInputSkip($_POST['updatePokemonSelect'], 'int', 'ID');
+        $speciesname = parseInputSkip($_POST['updatePokemonSpeciesName'], 'char_20', 'Species Name');
+        $cp = parseInputSkip($_POST['updatePokemonCP'], 'int', 'Combat Score');
+        $distance = parseInputSkip($_POST['updatePokemonDistance'], 'int', 'Distance', true);
+        $nickname = parseInputSkip($_POST['updatePokemonNickname'], 'char_15', 'Nickname', true);
+        $type1 = parseInputSkip($_POST['updatePokemonType1'], 'char_10', 'Type 1');
+        $type2 = parseInputSkip($_POST['updatePokemonType2'], 'char_10', 'Type 2', true);
+        $hp = parseInputSkip($_POST['updatePokemonHP'], 'int', 'Health Points');
+        $attack = parseInputSkip($_POST['updatePokemonAttack'], 'int', 'Attack');
+        $gymcountry = parseInputSkip($_POST['updatePokemonGymCountry'], 'char_50', 'Gym Country', true);
+        $gympostalcode = parseInputSkip($_POST['updatePokemonGymPostalCode'], 'char_10', 'Gym Postal Code', true);
+        $gymname = parseInputSkip($_POST['updatePokemonGymName'], 'char_50', 'Gym Name', true);
+        $stationeddate = parseInputSkip($_POST['updatePokemonStationedDate'], 'date', 'Stationed at Date', true);
+        $foundcountry = parseInputSkip($_POST['updatePokemonFoundCountry'], 'char_50', 'Found Country', true);
+        $foundpostalcode = parseInputSkip($_POST['updatePokemonFoundPostalCode'], 'char_10', 'Found Postal Code', true);
+        $foundname = parseInputSkip($_POST['updatePokemonFoundName'], 'char_50', 'Found Name', true);
     } catch(Exception $e) {
         alertUser($e->getMessage());
         return;
     }
     $values = valuesJoin([$speciesname, $type1, $type2]);
     if (!inputIsNull($speciesname) && !keysInTable('PokemonSpeciesTypes', ["SpeciesName" => $speciesname])) {
+        if (inputIsNull($type1)) {
+            alertUser("Type 1 given Input for Species Name is unknown, Type 1 must be specified");
+            return;
+        }
         executePlainSQL("INSERT INTO PokemonSpeciesTypes VALUES ($values)");
     }
     $values = valuesJoin([$speciesname, $cp, $attack, $hp]);
     if (!inputIsNull($speciesname) && !keysInTable('PokemonSpeciesCP', ["SpeciesName" => $speciesname])) {
+        if (inputIsNull($cp) || inputIsNull($attack) || inputIsNull($hp)) {
+            alertUser("Combat Power, Attack, and HP given Input for Species Name is unknown, all must be specified");
+            return;
+        }
         executePlainSQL("INSERT INTO PokemonSpeciesCP VALUES ($values)");
     }
     $locationTuple = ['Country' => $gymcountry, 'PostalCode' => $gympostalcode, 'Name' => $gymname];
     $allNonNull = !inputIsNull($gymcountry) && !inputIsNull($gympostalcode) && !inputIsNull($gymname);
     $anyNonNull = !inputIsNull($gymcountry) || !inputIsNull($gympostalcode) || !inputIsNull($gymname);
     if ($anyNonNull && !$allNonNull) {
-        alertUser("Input for Gym Country, Gym Postal Code, Gym Name must all be specified");
+        alertUser("Input for Gym Country, Gym Postal Code and Gym Name must all be specified");
         return;
     }
     if ($anyNonNull && !keysInTable('Location', $locationTuple)) {
-        alertUser("Input for Gym Country, Gym Postal Code, Gym Name must be in the Location table");
+        alertUser("Input for Gym Country, Gym Postal Code and Gym Name must be in the Location table");
         return;
     }
     $locationTuple = ['Country' => $foundcountry, 'PostalCode' => $foundpostalcode, 'Name' => $foundname];
     $allNonNull = !inputIsNull($foundcountry) && !inputIsNull($foundpostalcode) && !inputIsNull($foundname);
     $anyNonNull = !inputIsNull($foundcountry) || !inputIsNull($foundpostalcode) || !inputIsNull($foundname);
     if ($anyNonNull && !$allNonNull) {
-        alertUser("Input for Found Country, Found Postal Code, Found Name must all be specified");
+        alertUser("Input for Found Country, Found Postal Code and Found Name must all be specified");
         return;
     }
     if ($anyNonNull && !keysInTable('Location', $locationTuple)) {
-        alertUser("Input for Found Country, Found Postal Code, Found Name must be in the Location table");
+        alertUser("Input for Found Country, Found Postal Code and Found Name must be in the Location table");
         return;
     }
     $values = valuesJoinByName([
