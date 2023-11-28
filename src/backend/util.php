@@ -77,6 +77,24 @@ function keyInTable($table, $key, $value) {
   return true;
 }
 
+function keysInTable($table, $keyValues) {
+  $query = "SELECT * FROM $table WHERE ";
+  $first = true;
+  foreach ($keyValues as $key => $value) {
+    if (!$first) {
+      $query .= ' AND ';
+    } else {
+      $first = false;
+    }
+    $query .= "$key = $value";
+  }
+  $result = executePlainSQL($query, false);
+  if (!OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) {
+    return false;
+  }
+  return true;
+}
+
 function valuesJoin($values) {
   for ($idx = 0; $idx < sizeof($values); $idx++) {
     if (inputIsNull($values[$idx])) {
@@ -174,6 +192,35 @@ function handleRequests($method, $req) {
       disconnectFromDB();
     }
   }
+}
+
+function parseInput($input, $type, $inputName, $canBeNull = false) {
+  if (!$canBeNull && inputIsNull($input)) {
+    throw new Exception("Input for $inputName cannot be empty!");
+  }
+  $special_chars = ["\"", "'", ",", ")", ";", "%", "_"];
+  foreach ($special_chars as $char) {
+    if (strpos($input, $char) !== false) {
+      throw new Exception("Input for $inputName cannot contain the character $char");
+    }
+  }
+  if ($type === 'int') {
+    if (!ctype_digit($input) && !($canBeNull && inputIsNull($input))) {
+      throw new Exception("Input for $inputName must be numeric");
+    }
+    return $input;
+  } else if ($type === 'date') {
+    if (!preg_match("/\d{2}-[a-z]{3}-\d{4}/i", $input)  && !($canBeNull && inputIsNull($input))) {
+      throw new Exception("Input for $inputName must be in dd-mmm-yyyy format");
+    }
+    return "'" . $input . "'";
+  } else {
+    return "'" . $input . "'";
+  }
+}
+
+function alertUser($message) {
+  echo "<script>alert(\"$message\");</script>";
 }
 
 ?>
