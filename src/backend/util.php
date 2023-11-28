@@ -215,6 +215,10 @@ function parseInput($input, $type, $inputName, $canBeNull = false) {
     }
     return "'" . $input . "'";
   } else {
+    $maxLen = (int)(explode('_', $type)[1]);
+    if (strlen($input) > $maxLen) {
+      throw new Exception("Input for $inputName must be under $maxLen characters");
+    }
     return "'" . $input . "'";
   }
 }

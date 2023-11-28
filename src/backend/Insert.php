@@ -84,9 +84,9 @@ include_once("./util.php");
 function handleInsertPlayerRequest() {
     global $db_conn;
     try {
-        $username = parseInput($_POST['insertPlayerUsername'], 'str', 'Username');
+        $username = parseInput($_POST['insertPlayerUsername'], 'char_15', 'Username');
         $xp = parseInput($_POST['insertPlayerXP'], 'int', 'XP');
-        $teamname = parseInput($_POST['insertPlayerTeamName'], 'str', 'Team Name');
+        $teamname = parseInput($_POST['insertPlayerTeamName'], 'char_8', 'Team Name');
         $level = parseInput($_POST['insertPlayerLevel'], 'int', 'Level');
     } catch(Exception $e) {
         alertUser($e->getMessage());
@@ -112,10 +112,10 @@ function handleInsertPlayerRequest() {
 function handleInsertItemRequest() {
     global $db_conn;
     try {
-        $name = parseInput($_POST['insertItemName'], 'str', 'Name');
+        $name = parseInput($_POST['insertItemName'], 'char_30', 'Name');
         $cost = parseInput($_POST['insertItemCost'], 'int', 'Cost', true);
-        $effect = parseInput($_POST['insertItemEffect'], 'str', 'Effect');
-        $type = parseInput($_POST['insertItemType'], 'str', 'Type');
+        $effect = parseInput($_POST['insertItemEffect'], 'char_100', 'Effect');
+        $type = parseInput($_POST['insertItemType'], 'char_20', 'Type');
         $uses = parseInput($_POST['insertItemUses'], 'int', 'Uses', true);
     } catch(Exception $e) {
         alertUser($e->getMessage());
@@ -142,21 +142,21 @@ function handleInsertPokemonRequest() {
     global $db_conn;
     try {
         $id = parseInput($_POST['insertPokemonID'], 'int', 'ID');
-        $speciesname = parseInput($_POST['insertPokemonSpeciesName'], 'str', 'Species Name');
+        $speciesname = parseInput($_POST['insertPokemonSpeciesName'], 'char_20', 'Species Name');
         $cp = parseInput($_POST['insertPokemonCP'], 'int', 'Combat Score');
         $distance = parseInput($_POST['insertPokemonDistance'], 'int', 'Distance', true);
-        $nickname = parseInput($_POST['insertPokemonNickname'], 'str', 'Nickname', true);
-        $type1 = parseInput($_POST['insertPokemonType1'], 'str', 'Type 1');
-        $type2 = parseInput($_POST['insertPokemonType2'], 'str', 'Type 2', true);
+        $nickname = parseInput($_POST['insertPokemonNickname'], 'char_15', 'Nickname', true);
+        $type1 = parseInput($_POST['insertPokemonType1'], 'char_10', 'Type 1');
+        $type2 = parseInput($_POST['insertPokemonType2'], 'char_10', 'Type 2', true);
         $hp = parseInput($_POST['insertPokemonHP'], 'int', 'Health Points');
         $attack = parseInput($_POST['insertPokemonAttack'], 'int', 'Attack');
-        $gymcountry = parseInput($_POST['insertPokemonGymCountry'], 'str', 'Gym Country', true);
-        $gympostalcode = parseInput($_POST['insertPokemonGymPostalCode'], 'str', 'Gym Postal Code', true);
-        $gymname = parseInput($_POST['insertPokemonGymName'], 'str', 'Gym Name', true);
+        $gymcountry = parseInput($_POST['insertPokemonGymCountry'], 'char_50', 'Gym Country', true);
+        $gympostalcode = parseInput($_POST['insertPokemonGymPostalCode'], 'char_10', 'Gym Postal Code', true);
+        $gymname = parseInput($_POST['insertPokemonGymName'], 'char_50', 'Gym Name', true);
         $stationeddate = parseInput($_POST['insertPokemonStationedDate'], 'date', 'Stationed at Date', true);
-        $foundcountry = parseInput($_POST['insertPokemonFoundCountry'], 'str', 'Found Country', true);
-        $foundpostalcode = parseInput($_POST['insertPokemonFoundPostalCode'], 'str', 'Found Postal Code', true);
-        $foundname = parseInput($_POST['insertPokemonFoundName'], 'str', 'Found Name', true);
+        $foundcountry = parseInput($_POST['insertPokemonFoundCountry'], 'char_50', 'Found Country', true);
+        $foundpostalcode = parseInput($_POST['insertPokemonFoundPostalCode'], 'char_10', 'Found Postal Code', true);
+        $foundname = parseInput($_POST['insertPokemonFoundName'], 'char_50', 'Found Name', true);
     } catch(Exception $e) {
         alertUser($e->getMessage());
         return;
