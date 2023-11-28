@@ -69,9 +69,3 @@ if [ -e "$setup_script" ]; then
 EOF
 fi
 
-if [ -e "$more_inserts_script" ]; then
-  sqlplus -S "$ORACLE_USER/$ORACLE_PSSWD@stu" <<EOF
-  @$more_inserts_script
-  quit;
-EOF
-fi

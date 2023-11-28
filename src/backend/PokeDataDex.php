@@ -14,9 +14,17 @@
           <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
         </div>
         <div class="section">
+          <h1 class="header-text">View Datasets</h1>
+          <div>
+            <form action="ViewTables.php">
+              <input type="submit" value="View Tables">
+            </form>
+          </div>
+        </div>
+        <div class="section">
           <h1 class="header-text">Search</h1>
           <?php
-            include("./ViewTables.php");
+            include("./Select.php");
           ?>
           <?php
             include("./Leaderboard.php");

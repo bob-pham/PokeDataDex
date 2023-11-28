@@ -1,4 +1,13 @@
 
+function showOnlySelected(choice) {
+  const divs = document.getElementById("viewTablesForm").getElementsByTagName("div");
+
+  for (let i = 0; i < divs.length; i++) {
+    divs[i].style.display="none";
+  }
+
+  document.getElementById(choice).style.display="block";
+}
 
 function operationToggle(choice) {
   hideAllChoices();
