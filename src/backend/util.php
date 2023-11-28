@@ -206,7 +206,7 @@ function parseInput($input, $type, $inputName, $canBeNull = false) {
   }
   if ($type === 'int') {
     if (!ctype_digit($input) && !($canBeNull && inputIsNull($input))) {
-      throw new Exception("Input for $inputName must be numeric");
+      throw new Exception("Input for $inputName must be an integer");
     }
     return $input;
   } else if ($type === 'date') {

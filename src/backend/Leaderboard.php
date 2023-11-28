@@ -180,10 +180,18 @@ if (isset($_GET["leaderboard"])) {
       $query = teamWithBattledPlayers();
       break;
     case "Player's Strongest Pokemon":
-      $query = PlayersStrongestPokemon("'" . $_GET["valueName"] . "'");
+      try {
+        $query = PlayersStrongestPokemon(parseInput($_GET["valueName"], 'str', 'Player Username'));
+      } catch(Exception $e) {
+          alertUser($e->getMessage());
+      }
       break;
     case "Teams with N Players":
-      $query = TeamsWithAtLeastNPlayers($_GET["valueName"]);
+      try {
+        $query = TeamsWithAtLeastNPlayers(parseInput($_GET["valueName"], 'int', '# of Players'));
+      } catch(Exception $e) {
+          alertUser($e->getMessage());
+      }
     default:
       break;
   }
