@@ -181,7 +181,7 @@ if (isset($_GET["leaderboard"])) {
       break;
     case "Player's Strongest Pokemon":
       try {
-        $query = PlayersStrongestPokemon(parseInput($_GET["valueName"], 'str', 'Player Username'));
+        $query = PlayersStrongestPokemon(parseInput($_GET["valueName"], 'char_15', 'Player Username'));
       } catch(Exception $e) {
           alertUser($e->getMessage());
       }
