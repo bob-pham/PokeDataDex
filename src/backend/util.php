@@ -83,14 +83,6 @@ function getKeysFromTable($table, $keyList) {
   return $allTuples;
 }
 
-function keyInTable($table, $key, $value) {
-  $result = executePlainSQL("SELECT $key FROM $table WHERE $key = $value", false);
-  if (!OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) {
-    return false;
-  }
-  return true;
-}
-
 function keysInTable($table, $keyValues) {
   $query = "SELECT * FROM $table WHERE ";
   $first = true;
@@ -246,6 +238,25 @@ function parseInputSkip($input, $type, $inputName, $canBeNull = false) {
 
 function alertUser($message) {
   echo "<script>alert(\"$message\");</script>";
+}
+
+function getSelectOptions($table, $key) {
+  $tuples = getKeysFromTable($table, [$key]);
+  $result = [];
+  foreach ($tuples as $tuple) {
+    array_push($result, $tuple[0]);
+  }
+  return implode(', ', $result);
+}
+
+function getSelectUI($op) {
+  $tableKeys = ['Player' => 'Username', 'Item' => 'Name', 'Pokemon' => 'ID'];
+  foreach ($tableKeys as $table => $key)  {
+    $options = getSelectOptions($table, $key);
+    $selectName = $op . $table . 'Select';
+    echo "<script src=\"js/helper.js\"></script>";
+    echo "<script>addDropdown(\"$selectName\", \"$options\");</script>";
+  }
 }
 
 ?>

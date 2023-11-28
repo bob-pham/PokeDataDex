@@ -35,8 +35,7 @@
     </select>
   </form>
   <p class="modify-item">
-        The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.
-        Fields with no values entered will not be updated, enter NULL to change field to null value.
+    Fields with no values entered will not be updated, enter NULL to change field to null value.
   </p>
   </div>
   <div class="modify">
@@ -44,32 +43,6 @@
     <input type="hidden" id="updateRequest" name="updateRequest">
     <div class="hide" id="update-player">
       <select name="updatePlayerSelect" id="updatePlayerSelect"></select>
-        <?php
-        include_once("./util.php");
-
-        function getSelectOptions() {
-            $players = getKeysFromTable('Player', ['Username']);
-            $result = [];
-            foreach ($players as $tuple) {
-                array_push($result, $tuple[0]);
-            }
-            return implode(', ', $result);
-        }
-
-        function getUI() {
-            global $db_conn;
-            if ($db_conn == NULL) {
-                connectToDB();
-            }
-            $options = getSelectOptions();
-            echo "<script src=\"js/helper.js\"></script>";
-            echo "<script>addDropdown(\"$options\");</script>";
-            disconnectFromDB();
-        }
-        getUI();
-        ?>
-      <label class="modify-item">Username: </label>
-      <input type="text" name="updatePlayerUsername"></input>
       <label class="modify-item">XP: </label>
       <input type="text" name="updatePlayerXP"></input>
       <label class="modify-item">Team Name: </label>
@@ -81,8 +54,7 @@
       </div>
     </div>
     <div class="hide" id="update-item">
-      <label class="modify-item">Name: </label>
-      <input type="text" name="updateItemName"></input>
+      <select name="updateItemSelect" id="updateItemSelect"></select>
       <label class="modify-item">Cost</label>
       <input type="text" name="updateItemCost"></input>
       <label class="modify-item">Effect: </label>
@@ -96,8 +68,7 @@
       </div>
     </div>
     <div class="hide" id="update-pokemon">
-      <label class="modify-item">ID: </label>
-      <input type="text" name="updatePokemonID"></input>
+      <select name="updatePokemonSelect" id="updatePokemonSelect"></select>
       <label class="modify-item">Species Name: </label>
       <input type="text" name="updatePokemonSpeciesName"></input>
       <label class="modify-item">Combat Score: </label>
@@ -132,6 +103,18 @@
         <input type="submit" value="Update" name="updatePokemonSubmit">
       </div>
     </div>
+      <?php
+      include_once("./util.php");
+      function getUI() {
+          global $db_conn;
+          if ($db_conn == NULL) {
+              connectToDB();
+          }
+          getSelectUI("update");
+          disconnectFromDB();
+      }
+      getUI()
+      ?>
   </form>
   </div>
 
@@ -150,7 +133,7 @@ function handleUpdatePlayerRequest() {
         return;
     }
     $values = valuesJoin([$xp, $level]);
-    if (!inputIsNull($xp) && !keyInTable('PlayerXpLevel', "XP", $xp)) {
+    if (!inputIsNull($xp) && !keysInTable('PlayerXpLevel', ["XP" => $xp])) {
         executePlainSQL("INSERT INTO PlayerXPLevel VALUES ($values)");
     }
     if (!inputIsNull($teamname) && !keysInTable('Team', ['Name' => $teamname])) {
@@ -158,65 +141,104 @@ function handleUpdatePlayerRequest() {
         return;
     }
     $values = valuesJoinByName([$xp, $teamname], ["XP", "TeamName"]);
+    if (strlen($values) === 0) {
+        return;
+    }
     executePlainSQL("UPDATE Player SET $values WHERE Username = $username");
     OCICommit($db_conn);
 }
 
 function handleUpdateItemRequest() {
     global $db_conn;
-    $name = "'" . $_POST['updateItemName'] . "'";
-    $cost = $_POST['updateItemCost'];
-    $effect = "'" . $_POST['updateItemEffect'] . "'";
-    $type = "'" . $_POST['updateItemType'] . "'";
-    $uses = $_POST['updateItemUses'];
-
+    try {
+        $name = parseInputSkip($_POST['updateItemSelect'], 'char_30', 'Name');
+        $cost = parseInputSkip($_POST['updateItemCost'], 'int', 'Cost', true);
+        $effect = parseInputSkip($_POST['updateItemEffect'], 'char_100', 'Effect');
+        $type = parseInputSkip($_POST['updateItemType'], 'char_20', 'Type');
+        $uses = parseInputSkip($_POST['updateItemUses'], 'int', 'Uses', true);
+    } catch(Exception $e) {
+        alertUser($e->getMessage());
+        return;
+    }
     $values = valuesJoin([$type, $uses]);
-    if (!inputIsNull($type) && !keyInTable('ItemTypeUses', "Type", $type)) {
+    if (!inputIsNull($type) && !keysInTable('ItemTypeUses', ["Type" => $type])) {
         executePlainSQL("INSERT INTO ItemTypeUses VALUES ($values)");
     }
     $values = valuesJoin([$effect, $type]);
-    if (!inputIsNull($effect) && !keyInTable('ItemEffectType', "Effect", $effect)) {
+    if (!inputIsNull($effect) && !keysInTable('ItemEffectType', ["Effect" => $effect])) {
         executePlainSQL("INSERT INTO ItemEffectType VALUES ($values)");
     }
-    $values = valuesJoinByName([$name, $cost, $effect], ["Name", "Cost", "Effect"]);
+    $values = valuesJoinByName([$cost, $effect], ["Cost", "Effect"]);
+    if (strlen($values) === 0) {
+        return;
+    }
     executePlainSQL("UPDATE Item SET $values WHERE name = $name");
     OCICommit($db_conn);
 }
 
 function handleUpdatePokemonRequest() {
     global $db_conn;
-    $id = $_POST['updatePokemonID'];
-    $speciesname = "'" . $_POST['updatePokemonSpeciesName'] . "'";
-    $cp = $_POST['updatePokemonCP'];
-    $distance = $_POST['updatePokemonDistance'];
-    $nickname =  "'" . $_POST['updatePokemonNickname'] . "'";
-    $type1 = "'" . $_POST['updatePokemonType1'] . "'";
-    $type2 = "'" . $_POST['updatePokemonType2'] . "'";
-    $hp = $_POST['updatePokemonHP'];
-    $attack = $_POST['updatePokemonAttack'];
-    $gymcountry = "'" . $_POST['updatePokemonGymCountry'] . "'";
-    $gympostalcode = "'" . $_POST['updatePokemonGymPostalCode'] . "'";
-    $gymname = "'" . $_POST['updatePokemonGymName'] . "'";
-    $stationeddate = "'" . $_POST['updatePokemonStationedDate'] . "'";
-    $foundcountry = "'" . $_POST['updatePokemonFoundCountry'] . "'";
-    $foundpostalcode = "'" . $_POST['updatePokemonFoundPostalCode'] . "'";
-    $foundname = "'" . $_POST['updatePokemonFoundName'] . "'";
-
+    try {
+        $id = parseInput($_POST['insertPokemonSelect'], 'int', 'ID');
+        $speciesname = parseInput($_POST['insertPokemonSpeciesName'], 'char_20', 'Species Name');
+        $cp = parseInput($_POST['insertPokemonCP'], 'int', 'Combat Score');
+        $distance = parseInput($_POST['insertPokemonDistance'], 'int', 'Distance', true);
+        $nickname = parseInput($_POST['insertPokemonNickname'], 'char_15', 'Nickname', true);
+        $type1 = parseInput($_POST['insertPokemonType1'], 'char_10', 'Type 1');
+        $type2 = parseInput($_POST['insertPokemonType2'], 'char_10', 'Type 2', true);
+        $hp = parseInput($_POST['insertPokemonHP'], 'int', 'Health Points');
+        $attack = parseInput($_POST['insertPokemonAttack'], 'int', 'Attack');
+        $gymcountry = parseInput($_POST['insertPokemonGymCountry'], 'char_50', 'Gym Country', true);
+        $gympostalcode = parseInput($_POST['insertPokemonGymPostalCode'], 'char_10', 'Gym Postal Code', true);
+        $gymname = parseInput($_POST['insertPokemonGymName'], 'char_50', 'Gym Name', true);
+        $stationeddate = parseInput($_POST['insertPokemonStationedDate'], 'date', 'Stationed at Date', true);
+        $foundcountry = parseInput($_POST['insertPokemonFoundCountry'], 'char_50', 'Found Country', true);
+        $foundpostalcode = parseInput($_POST['insertPokemonFoundPostalCode'], 'char_10', 'Found Postal Code', true);
+        $foundname = parseInput($_POST['insertPokemonFoundName'], 'char_50', 'Found Name', true);
+    } catch(Exception $e) {
+        alertUser($e->getMessage());
+        return;
+    }
     $values = valuesJoin([$speciesname, $type1, $type2]);
-    if (!inputIsNull($speciesname) && !keyInTable('PokemonSpeciesTypes', "SpeciesName", $speciesname)) {
+    if (!inputIsNull($speciesname) && !keysInTable('PokemonSpeciesTypes', ["SpeciesName" => $speciesname])) {
         executePlainSQL("INSERT INTO PokemonSpeciesTypes VALUES ($values)");
     }
     $values = valuesJoin([$speciesname, $cp, $attack, $hp]);
-    if (!inputIsNull($speciesname) && !keyInTable('PokemonSpeciesCP', "SpeciesName", $speciesname)) {
+    if (!inputIsNull($speciesname) && !keysInTable('PokemonSpeciesCP', ["SpeciesName" => $speciesname])) {
         executePlainSQL("INSERT INTO PokemonSpeciesCP VALUES ($values)");
     }
+    $locationTuple = ['Country' => $gymcountry, 'PostalCode' => $gympostalcode, 'Name' => $gymname];
+    $allNonNull = !inputIsNull($gymcountry) && !inputIsNull($gympostalcode) && !inputIsNull($gymname);
+    $anyNonNull = !inputIsNull($gymcountry) || !inputIsNull($gympostalcode) || !inputIsNull($gymname);
+    if ($anyNonNull && !$allNonNull) {
+        alertUser("Input for Gym Country, Gym Postal Code, Gym Name must all be specified");
+        return;
+    }
+    if ($anyNonNull && !keysInTable('Location', $locationTuple)) {
+        alertUser("Input for Gym Country, Gym Postal Code, Gym Name must be in the Location table");
+        return;
+    }
+    $locationTuple = ['Country' => $foundcountry, 'PostalCode' => $foundpostalcode, 'Name' => $foundname];
+    $allNonNull = !inputIsNull($foundcountry) && !inputIsNull($foundpostalcode) && !inputIsNull($foundname);
+    $anyNonNull = !inputIsNull($foundcountry) || !inputIsNull($foundpostalcode) || !inputIsNull($foundname);
+    if ($anyNonNull && !$allNonNull) {
+        alertUser("Input for Found Country, Found Postal Code, Found Name must all be specified");
+        return;
+    }
+    if ($anyNonNull && !keysInTable('Location', $locationTuple)) {
+        alertUser("Input for Found Country, Found Postal Code, Found Name must be in the Location table");
+        return;
+    }
     $values = valuesJoinByName([
-        $id, $speciesname, $cp, $distance, $nickname, $gymcountry, $gympostalcode, $gymname,
+        $speciesname, $cp, $distance, $nickname, $gymcountry, $gympostalcode, $gymname,
         $stationeddate, $foundcountry, $foundpostalcode, $foundname
     ], [
-        "ID", "SpeciesName", "CP", "Distance", "Nickname", "GymCountry", "GymPostalCode", "GymName",
+        "SpeciesName", "CP", "Distance", "Nickname", "GymCountry", "GymPostalCode", "GymName",
         "StationedAtDate", "FoundCountry", "FoundPostalCode", "FoundName"
     ]);
+    if (strlen($values) === 0) {
+        return;
+    }
     executePlainSQL("UPDATE Pokemon SET $values WHERE ID = $id");
     OCICommit($db_conn);
 }

@@ -53,8 +53,8 @@ function leaderboardInputToggle(choice) {
     }
 }
 
-function addDropdown(options) {
-    let select = document.getElementById("updatePlayerSelect");
+function addDropdown(selectName, options) {
+    let select = document.getElementById(selectName);
     for (const username of options.split(', ')) {
         let option = document.createElement('option');
         option.text = username;
