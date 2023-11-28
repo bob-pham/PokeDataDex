@@ -1,5 +1,6 @@
 <div class="query">
   <h2>Search Players</h2>
+  <p>Left OR/AND takes priority</p>
   <form method="GET" action="PokeDataDex.php">
     <input type="hidden" name="select" id="select">
     <div class="query-inputbox">
@@ -83,8 +84,6 @@ function selectQuery() {
   if ($query == "") {
     $query = "SELECT * FROM Player";
   }
-
-  echo "<h1>$query</h1>";
 
   $result = executePlainSQL($query);
   printResult($result);
