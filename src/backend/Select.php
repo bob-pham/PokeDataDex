@@ -66,7 +66,7 @@ function selectQuery() {
 
   if($_GET["userNameValue"] != "None") {
     $toFind = handleWildcards($_GET["userNameValue"], $_GET["userNameOperator"]);
-    $query = $query . $queryBase . "p.Username LIKE $toFind )" . $_GET["userNameSelect"] . " "; 
+    $query = $query . $queryBase . "TRIM(p.Username) LIKE $toFind )" . $_GET["userNameSelect"] . " "; 
   }
 
   if($_GET["userXP"] != -1) {
@@ -75,7 +75,7 @@ function selectQuery() {
 
   if($_GET["userTeam"] != "None") {
     $toFind = handleWildcards($_GET["userTeam"], $_GET["userTeamOperator"]);
-    $query = $query . $queryBase . "p.TeamName LIKE $toFind )";
+    $query = $query . $queryBase . "TRIM(p.TeamName) LIKE $toFind )";
   }
 
   $query = trim($query, " UNION ");
