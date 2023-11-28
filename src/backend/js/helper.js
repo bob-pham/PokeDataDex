@@ -52,3 +52,13 @@ function leaderboardInputToggle(choice) {
         document.getElementById("query-submit").style.display="flex";
     }
 }
+
+function addDropdown(options) {
+    let select = document.getElementById("updatePlayerSelect");
+    for (const username of options.split(', ')) {
+        let option = document.createElement('option');
+        option.text = username;
+        option.value = username;
+        select.add(option);
+    }
+}

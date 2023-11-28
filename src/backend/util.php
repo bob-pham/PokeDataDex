@@ -69,6 +69,20 @@ See the sample code below for how this function is used */
   }
 }
 
+function getKeysFromTable($table, $keyList) {
+  $keys = implode(', ', $keyList);
+  $result = executePlainSQL("SELECT $keys FROM $table");
+  $allTuples = [];
+  while (($row = OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) != false) {
+    $tuple = [];
+    foreach ($row as $cell) {
+      array_push($tuple, (string) $cell);
+    }
+    array_push($allTuples, $tuple);
+  }
+  return $allTuples;
+}
+
 function keyInTable($table, $key, $value) {
   $result = executePlainSQL("SELECT $key FROM $table WHERE $key = $value", false);
   if (!OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) {
@@ -107,12 +121,12 @@ function valuesJoin($values) {
 function valuesJoinByName($values, $names) {
   $res = "";
   for ($idx = 0; $idx < sizeof($values); $idx++) {
-    if (in_array($values[$idx], ["", "''"])) {
+    if (strlen($values[$idx]) === 0) {
       continue;
-    } else if (in_array(strtolower($values[$idx]), ["null", "'null'"])) {
+    } else if (inputIsNull($values[$idx])) {
       $values[$idx] = 'NULL';
     }
-    if ($idx !== 0) {
+    if (strlen($res) !== 0) {
       $res .= ", ";
     }
     $res .= "$names[$idx] = $values[$idx]";
@@ -221,6 +235,13 @@ function parseInput($input, $type, $inputName, $canBeNull = false) {
     }
     return "'" . $input . "'";
   }
+}
+
+function parseInputSkip($input, $type, $inputName, $canBeNull = false) {
+  if (strlen($input) === 0) {
+    return "";
+  }
+  return parseInput($input, $type, $inputName, $canBeNull);
 }
 
 function alertUser($message) {

@@ -32,6 +32,14 @@
         </div>
         <div class="section">
           <h1 class="header-text">Edit</h1>
+            <div class="section">
+                <h1 class="header-text">View Datasets</h1>
+                <div>
+                    <form action="Update.php">
+                        <input type="submit" value="Update">
+                    </form>
+                </div>
+            </div>
           <form method="POST" action="PokeDataDex.php">
             <select id="select" onChange="operationToggle(value)">
               <option selected value="N/A">Operation</option>
@@ -41,19 +49,13 @@
             </select>
           </form>
           <div class="hide" id="modify-insert">
-            <?php
-              include("./Insert.php");
-            ?>
+
           </div>
           <div class="hide" id="modify-update">
-            <?php
-               include("./Update.php");
-            ?>
+
           </div>
           <div class="hide" id="modify-delete">
-            <?php
-              include("./Delete.php");
-            ?>
+
           </div>
         </div>
         <div class="section">

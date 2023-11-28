@@ -1,13 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PokeDataDex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/logo.png" sizes="16x16" type="image.png">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+</head>
+<body class="background">
+<div class="header">
+    <h1 class="header-text">PokeDataDex</h1>
+    <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
+</div>
+<div class="section">
+    <h1 class="header-text">Home</h1>
+    <div>
+        <form action="PokeDataDex.php">
+            <input type="submit" value="Home">
+        </form>
+    </div>
+</div>
+
+<div class="section">
 <div class="subsection">
   <h2>Update a Value in Table:</h2>
   <div class="subsection">
-  <form method="POST" action="PokeDataDex.php">
+  <form method="POST" action="Update.php">
     <select id="select" onChange="handleSelection(value)">
       <option selected value="update-select">Select a table </option>
       <option value="update-player">Player </option>
       <option value="update-item">Item </option>
       <option value="update-pokemon">Pokemon </option>
-  </select>
+    </select>
   </form>
   <p class="modify-item">
         The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.
@@ -15,9 +40,34 @@
   </p>
   </div>
   <div class="modify">
-  <form method="POST" action="PokeDataDex.php">
+  <form method="POST" action="Update.php">
     <input type="hidden" id="updateRequest" name="updateRequest">
     <div class="hide" id="update-player">
+      <select name="updatePlayerSelect" id="updatePlayerSelect"></select>
+        <?php
+        include_once("./util.php");
+
+        function getSelectOptions() {
+            $players = getKeysFromTable('Player', ['Username']);
+            $result = [];
+            foreach ($players as $tuple) {
+                array_push($result, $tuple[0]);
+            }
+            return implode(', ', $result);
+        }
+
+        function getUI() {
+            global $db_conn;
+            if ($db_conn == NULL) {
+                connectToDB();
+            }
+            $options = getSelectOptions();
+            echo "<script src=\"js/helper.js\"></script>";
+            echo "<script>addDropdown(\"$options\");</script>";
+            disconnectFromDB();
+        }
+        getUI();
+        ?>
       <label class="modify-item">Username: </label>
       <input type="text" name="updatePlayerUsername"></input>
       <label class="modify-item">XP: </label>
@@ -27,57 +77,57 @@
       <label class="modify-item">Level: </label>
       <input type="text" name="updatePlayerLevel"></input>
       <div class="subsection">
-          <input type="submit" value="Update" name="updatePlayerSubmit">
+        <input type="submit" value="Update" name="updatePlayerSubmit">
       </div>
     </div>
     <div class="hide" id="update-item">
       <label class="modify-item">Name: </label>
       <input type="text" name="updateItemName"></input>
-      <label class="modify-item">Cost (optional)</label>
+      <label class="modify-item">Cost</label>
       <input type="text" name="updateItemCost"></input>
       <label class="modify-item">Effect: </label>
       <input type="text" name="updateItemEffect"></input>
       <label class="modify-item">Type: </label>
       <input type="text" name="updateItemType"></input>
-      <label class="modify-item">Uses (optional): </label>
+      <label class="modify-item">Uses: </label>
       <input type="text" name="updateItemUses"></input>
       <div class="subsection">
         <input type="submit" value="Update" name="updateItemSubmit">
       </div>
     </div>
     <div class="hide" id="update-pokemon">
-        <label class="modify-item">ID: </label>
-        <input type="text" name="updatePokemonID"></input>
-        <label class="modify-item">Species Name: </label>
-        <input type="text" name="updatePokemonSpeciesName"></input>
-        <label class="modify-item">Combat Score: </label>
-        <input type="text" name="updatePokemonCP"></input>
-        <label class="modify-item">Distance (optional): </label>
-        <input type="text" name="updatePokemonDistance"></input>
-        <label class="modify-item">Nickname (optional): </label>
-        <input type="text" name="updatePokemonNickname"></input>
-        <label class="modify-item">Type1: </label>
-        <input type="text" name="updatePokemonType1"></input>
-        <label class="modify-item">Type2 (optional): </label>
-        <input type="text" name="updatePokemonType2"></input>
-        <label class="modify-item">Health Points: </label>
-        <input type="text" name="updatePokemonHP"></input>
-        <label class="modify-item">Attack: </label>
-        <input type="text" name="updatePokemonAttack"></input>
-        <label class="modify-item">Gym Country (optional): </label>
-        <input type="text" name="updatePokemonGymCountry"></input>
-        <label class="modify-item">Gym Postal Code (optional): </label>
-        <input type="text" name="updatePokemonGymPostalCode"></input>
-        <label class="modify-item">Gym Name (optional): </label>
-        <input type="text" name="updatePokemonGymName"></input>
-        <label class="modify-item">Stationed at Date (optional): </label>
-        <input type="text" name="updatePokemonStationedDate"></input>
-        <label class="modify-item">Found Country (optional)</label>
-        <input type="text" name="updatePokemonFoundCountry"></input>
-        <label class="modify-item">Found Postal Code (optional): </label>
-        <input type="text" name="updatePokemonFoundPostalCode"></input>
-        <label class="modify-item">Found Name (optional): </label>
-        <input type="text" name="updatePokemonFoundName"></input>
+      <label class="modify-item">ID: </label>
+      <input type="text" name="updatePokemonID"></input>
+      <label class="modify-item">Species Name: </label>
+      <input type="text" name="updatePokemonSpeciesName"></input>
+      <label class="modify-item">Combat Score: </label>
+      <input type="text" name="updatePokemonCP"></input>
+      <label class="modify-item">Distance: </label>
+      <input type="text" name="updatePokemonDistance"></input>
+      <label class="modify-item">Nickname: </label>
+      <input type="text" name="updatePokemonNickname"></input>
+      <label class="modify-item">Type1: </label>
+      <input type="text" name="updatePokemonType1"></input>
+      <label class="modify-item">Type2: </label>
+      <input type="text" name="updatePokemonType2"></input>
+      <label class="modify-item">Health Points: </label>
+      <input type="text" name="updatePokemonHP"></input>
+      <label class="modify-item">Attack: </label>
+      <input type="text" name="updatePokemonAttack"></input>
+      <label class="modify-item">Gym Country: </label>
+      <input type="text" name="updatePokemonGymCountry"></input>
+      <label class="modify-item">Gym Postal Code: </label>
+      <input type="text" name="updatePokemonGymPostalCode"></input>
+      <label class="modify-item">Gym Name: </label>
+      <input type="text" name="updatePokemonGymName"></input>
+      <label class="modify-item">Stationed at Date (dd-mon-yyyy): </label>
+      <input type="text" name="updatePokemonStationedDate"></input>
+      <label class="modify-item">Found Country</label>
+      <input type="text" name="updatePokemonFoundCountry"></input>
+      <label class="modify-item">Found Postal Code: </label>
+      <input type="text" name="updatePokemonFoundPostalCode"></input>
+      <label class="modify-item">Found Name: </label>
+      <input type="text" name="updatePokemonFoundName"></input>
       <div class="subsection">
         <input type="submit" value="Update" name="updatePokemonSubmit">
       </div>
@@ -90,16 +140,24 @@ include_once("./util.php");
 
 function handleUpdatePlayerRequest() {
     global $db_conn;
-    $username = "'" . $_POST['updatePlayerUsername'] . "'";
-    $xp = $_POST['updatePlayerXP'];
-    $teamname = "'" . $_POST['updatePlayerTeamName'] . "'";
-    $level = $_POST['updatePlayerLevel'];
-
+    try {
+        $username = parseInputSkip($_POST['updatePlayerSelect'], 'char_15', 'Username');
+        $xp = parseInputSkip($_POST['updatePlayerXP'], 'int', 'XP');
+        $teamname = parseInputSkip($_POST['updatePlayerTeamName'], 'char_8', 'Team Name');
+        $level = parseInputSkip($_POST['updatePlayerLevel'], 'int', 'Level');
+    } catch(Exception $e) {
+        alertUser($e->getMessage());
+        return;
+    }
     $values = valuesJoin([$xp, $level]);
     if (!inputIsNull($xp) && !keyInTable('PlayerXpLevel', "XP", $xp)) {
         executePlainSQL("INSERT INTO PlayerXPLevel VALUES ($values)");
     }
-    $values = valuesJoinByName([$username, $xp, $teamname], ["Username", "XP", "TeamName"]);
+    if (!inputIsNull($teamname) && !keysInTable('Team', ['Name' => $teamname])) {
+        alertUser("Input for Team Name must be in the Team table");
+        return;
+    }
+    $values = valuesJoinByName([$xp, $teamname], ["XP", "TeamName"]);
     executePlainSQL("UPDATE Player SET $values WHERE Username = $username");
     OCICommit($db_conn);
 }
@@ -169,3 +227,9 @@ foreach (["Player", "Item", "Pokemon"] as $table) {
 
 ?>
 </div>
+    <div class="section">
+        <img src="assets/logo.png" type="image.png">
+    </div>
+    <script src="js/helper.js" defer></script>
+</body>
+</html>
