@@ -103,18 +103,18 @@
         <input type="submit" value="Update" name="updatePokemonSubmit">
       </div>
     </div>
-      <?php
-      include_once("./util.php");
-      function getUI() {
-          global $db_conn;
-          if ($db_conn == NULL) {
-              connectToDB();
-          }
-          getSelectUI("update");
-          disconnectFromDB();
-      }
-      getUI()
-      ?>
+    <?php
+    include_once("./util.php");
+    function getUI() {
+        global $db_conn;
+        if ($db_conn == NULL) {
+            connectToDB();
+        }
+        getSelectUI("update");
+        disconnectFromDB();
+    }
+    getUI()
+    ?>
   </form>
   </div>
 

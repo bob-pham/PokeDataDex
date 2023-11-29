@@ -16,7 +16,7 @@
       <option value="Teams with N Players">Teams with at least N players</option>
     </select>
     <div class="query-input hide" id="value-input">
-      <label class="query-item query-label" id="value-input-label" for="valueName">FOO</label>
+      <label class="query-item query-label" id="value-input-label" for="valueName"></label>
       <input class="query-item query-input-box" type="text" id="valueName" name="valueName">
       </div>
     <div class="query-input hide" id="count-input">

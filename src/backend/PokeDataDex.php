@@ -32,31 +32,17 @@
         </div>
         <div class="section">
           <h1 class="header-text">Edit</h1>
-            <div class="section">
-                <h1 class="header-text">View Datasets</h1>
-                <div>
-                    <form action="Update.php">
-                        <input type="submit" value="Update">
-                    </form>
-                </div>
+            <div class="modify">
+              <form action="Insert.php" class="query-item" >
+                <input type="submit" value="Insert">
+              </form>
+              <form action="Update.php" class="query-item" >
+                <input type="submit" value="Update">
+              </form>
+              <form action="Delete.php" class="query-item" >
+                <input type="submit" value="Delete">
+              </form>
             </div>
-          <form method="POST" action="PokeDataDex.php">
-            <select id="select" onChange="operationToggle(value)">
-              <option selected value="N/A">Operation</option>
-              <option value="modify-insert">INSERT</option>
-              <option value="modify-update">UPDATE</option>
-              <option value="modify-delete">DELETE</option>
-            </select>
-          </form>
-          <div class="hide" id="modify-insert">
-
-          </div>
-          <div class="hide" id="modify-update">
-
-          </div>
-          <div class="hide" id="modify-delete">
-
-          </div>
         </div>
         <div class="section">
           <img src="assets/logo.png" type="image.png">
