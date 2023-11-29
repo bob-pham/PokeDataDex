@@ -69,8 +69,32 @@ See the sample code below for how this function is used */
   }
 }
 
-function keyInTable($table, $key, $value) {
-  $result = executePlainSQL("SELECT $key FROM $table WHERE $key = $value", false);
+function getKeysFromTable($table, $keyList) {
+  $keys = implode(', ', $keyList);
+  $result = executePlainSQL("SELECT $keys FROM $table");
+  $allTuples = [];
+  while (($row = OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) != false) {
+    $tuple = [];
+    foreach ($row as $cell) {
+      array_push($tuple, (string) $cell);
+    }
+    array_push($allTuples, $tuple);
+  }
+  return $allTuples;
+}
+
+function keysInTable($table, $keyValues) {
+  $query = "SELECT * FROM $table WHERE ";
+  $first = true;
+  foreach ($keyValues as $key => $value) {
+    if (!$first) {
+      $query .= ' AND ';
+    } else {
+      $first = false;
+    }
+    $query .= "$key = $value";
+  }
+  $result = executePlainSQL($query, false);
   if (!OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) {
     return false;
   }
@@ -89,12 +113,12 @@ function valuesJoin($values) {
 function valuesJoinByName($values, $names) {
   $res = "";
   for ($idx = 0; $idx < sizeof($values); $idx++) {
-    if (in_array($values[$idx], ["", "''"])) {
+    if (strlen($values[$idx]) === 0) {
       continue;
-    } else if (in_array(strtolower($values[$idx]), ["null", "'null'"])) {
+    } else if (inputIsNull($values[$idx])) {
       $values[$idx] = 'NULL';
     }
-    if ($idx !== 0) {
+    if (strlen($res) !== 0) {
       $res .= ", ";
     }
     $res .= "$names[$idx] = $values[$idx]";
@@ -173,6 +197,65 @@ function handleRequests($method, $req) {
       $requests[$req]();
       disconnectFromDB();
     }
+  }
+}
+
+function parseInput($input, $type, $inputName, $canBeNull = false) {
+  if (!$canBeNull && inputIsNull($input)) {
+    throw new Exception("Input for $inputName cannot be empty!");
+  }
+  $special_chars = ["\"", "'", ",", ")", ";", "%", "_"];
+  foreach ($special_chars as $char) {
+    if (strpos($input, $char) !== false) {
+      throw new Exception("Input for $inputName cannot contain the character $char");
+    }
+  }
+  if ($type === 'int') {
+    if (!ctype_digit($input) && !($canBeNull && inputIsNull($input))) {
+      throw new Exception("Input for $inputName must be an integer");
+    }
+    return $input;
+  } else if ($type === 'date') {
+    if (!preg_match("/\d{2}-[a-z]{3}-\d{4}/i", $input)  && !($canBeNull && inputIsNull($input))) {
+      throw new Exception("Input for $inputName must be in dd-mmm-yyyy format");
+    }
+    return "'" . $input . "'";
+  } else {
+    $maxLen = (int)(explode('_', $type)[1]);
+    if (strlen($input) > $maxLen) {
+      throw new Exception("Input for $inputName must be under $maxLen characters");
+    }
+    return "'" . $input . "'";
+  }
+}
+
+function parseInputSkip($input, $type, $inputName, $canBeNull = false) {
+  if (strlen($input) === 0) {
+    return "";
+  }
+  return parseInput($input, $type, $inputName, $canBeNull);
+}
+
+function alertUser($message) {
+  echo "<script>alert(\"$message\");</script>";
+}
+
+function getSelectOptions($table, $key) {
+  $tuples = getKeysFromTable($table, [$key]);
+  $result = [];
+  foreach ($tuples as $tuple) {
+    array_push($result, $tuple[0]);
+  }
+  return implode(', ', $result);
+}
+
+function getSelectUI($op) {
+  $tableKeys = ['Player' => 'Username', 'Item' => 'Name', 'Pokemon' => 'ID'];
+  foreach ($tableKeys as $table => $key)  {
+    $options = getSelectOptions($table, $key);
+    $selectName = $op . $table . 'Select';
+    echo "<script src=\"js/helper.js\"></script>";
+    echo "<script>addDropdown(\"$selectName\", \"$options\");</script>";
   }
 }
 

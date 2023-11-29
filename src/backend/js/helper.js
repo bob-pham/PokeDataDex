@@ -9,17 +9,6 @@ function showOnlySelected(choice) {
   document.getElementById(choice).style.display="block";
 }
 
-function operationToggle(choice) {
-  hideAllChoices();
-  document.getElementById(choice).style.display="grid";
-}
-
-function hideAllChoices() {
-  document.getElementById('modify-insert').style.display="none";
-  document.getElementById('modify-update').style.display="none";
-  document.getElementById('modify-delete').style.display="none";
-}
-
 function handleSelection(choice) {
     type = choice.split("-")[0];
     hideAll(type);
@@ -50,5 +39,15 @@ function leaderboardInputToggle(choice) {
         document.getElementById("value-input").style.display="none";
         document.getElementById("count-input").style.display="flex";
         document.getElementById("query-submit").style.display="flex";
+    }
+}
+
+function addDropdown(selectName, options) {
+    let select = document.getElementById(selectName);
+    for (const username of options.split(', ')) {
+        let option = document.createElement('option');
+        option.text = username;
+        option.value = username;
+        select.add(option);
     }
 }
