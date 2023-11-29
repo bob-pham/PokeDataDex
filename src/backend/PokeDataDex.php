@@ -14,25 +14,11 @@
           <h3 class="sub-header-text">By Bob Pham, Jason Wang, Stevan Zhuang</h3>
         </div>
         <div class="section">
-          <h1 class="header-text">View Datasets</h1>
-          <div>
-            <form action="ViewTables.php">
-              <input type="submit" value="View Tables">
-            </form>
-          </div>
-        </div>
-        <div class="section">
-          <h1 class="header-text">Search</h1>
-          <?php
-            include("./Select.php");
-          ?>
-          <?php
-            include("./Leaderboard.php");
-          ?>
-        </div>
-        <div class="section">
-          <h1 class="header-text">Edit</h1>
+          <h1 class="header-text">Navigate</h1>
             <div class="modify">
+              <form action="ViewTables.php">
+                <input type="submit" value="View Tables">
+              </form>
               <form action="Insert.php" class="query-item" >
                 <input type="submit" value="Insert">
               </form>
@@ -44,7 +30,19 @@
               </form>
             </div>
         </div>
+        <div class="divider">
+        <hr class="divider">
+        </div>
         <div class="section">
+          <h1 class="header-text">Search</h1>
+          <?php
+            include("./Select.php");
+          ?>
+          <?php
+            include("./Leaderboard.php");
+          ?>
+        </div>
+       <div class="section">
           <img src="assets/logo.png" type="image.png">
         </div>
   <script src="js/helper.js" defer></script>

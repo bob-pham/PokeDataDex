@@ -1,9 +1,18 @@
 <?php
+//
+//
+// Many functions are from or based on https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
+// example project
+//
+//
+
+
 $success = True; //keep track of errors so it redirects the page only if there are no errors
 $db_conn = NULL; // edit the login credentials in connectToDB()
 $show_debug_alert_messages = False; // set to True if you want alerts to show you which methods are being triggered (see how it is used in debugAlertMessage())
 
 function executePlainSQL($cmdstr, $logging = true) {
+  // From https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
   //takes a plain (no bound variables) SQL command and executes it
   global $db_conn, $success;
 
@@ -35,6 +44,7 @@ function executePlainSQL($cmdstr, $logging = true) {
 
 
 function executeBoundSQL($cmdstr, $list) {
+// From https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
 /* Sometimes the same statement will be executed several times with different values for the variables involved in the query.
 In this case you don't need to create the statement several times. Bound variables cause a statement to only be parsed once and you can reuse the statement. This is also very useful in protecting against SQL injection.
 See the sample code below for how this function is used */
@@ -130,7 +140,9 @@ function inputIsNull($input) {
   return in_array(strtolower($input), ["", "''", "null", "'null'"]);
 }
 
-function printResult($result) { //prints results from a select statement
+function printResult($result) { 
+  //prints results from a select statement
+  // Based on https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
   // echo "<br>Retrieved data from table Player:<br>";
   echo '<div class="result-table">';
   echo "<table>";
@@ -159,6 +171,7 @@ function printResult($result) { //prints results from a select statement
 }
 
 function connectToDB() {
+  // Based on https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
   global $db_conn;
 
   // Your username is ora_(CWL_ID) and the password is a(student number). For example,
@@ -175,6 +188,7 @@ function connectToDB() {
 }
 
 function disconnectFromDB() {
+  // Based on https://www.students.cs.ubc.ca/~cs-304/resources/php-oracle-resources/php-setup.html
   global $db_conn;
 
   OCILogoff($db_conn);

@@ -208,3 +208,8 @@ td {
 img {
   padding: 50px;
 }
+
+.divider {
+  width: screen;
+  min-width: 100%;
+}
