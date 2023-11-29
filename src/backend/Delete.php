@@ -92,7 +92,7 @@ function handleDeleteItemRequest() {
 function handleDeletePokemonRequest() {
     global $db_conn;
     try {
-        $id = parseInputSkip($_POST['deletePokemonSelect'], 'inr', 'ID');
+        $id = parseInputSkip($_POST['deletePokemonSelect'], 'int', 'ID');
     } catch(Exception $e) {
         alertUser($e->getMessage());
         return;
