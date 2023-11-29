@@ -1,5 +1,5 @@
 <div class="query">
-  <h2>Leaderboards</h2>
+  <h1 class="header-text">Leaderboards</h1>
   <form method="GET" class="query-section" action="PokeDataDex.php">
     <input type="hidden" name="leaderboard" id="leaderboard">
     <select name="leaderboardType" id="leaderboardType" onChange="leaderboardInputToggle(value)">
@@ -14,6 +14,7 @@
       <option value="Team with Battled Players">Teams with Most Players Who Done a Battle</option>
       <option value="Player's Strongest Pokemon">Player's Strongest pokemon for each Type</option>
       <option value="Teams with N Players">Teams with at least N players</option>
+      <option value="Teams Who Own the Most Species Name">Teams Who Own the Most of a Certain Pokemon Species</option>
     </select>
     <div class="query-input hide" id="value-input">
       <label class="query-item query-label" id="value-input-label" for="valueName"></label>
@@ -144,7 +145,19 @@ function TeamsWithAtLeastNPlayers($n) {
   "SELECT p.TeamName as \"Team \", COUNT(*) as \"# Players\"
   FROM Player p
   GROUP BY TeamName 
-  HAVING COUNT(*) > $n";
+  HAVING COUNT(*) >= $n";
+
+  return $query;
+}
+
+function teamsWithMostOwnedSpecies($species) {
+  $query = 
+  "SELECT pl.TeamName as \"Team \", COUNT(*) as \" # of $species \"  
+  FROM  player pl JOIN (SELECT * FROM PLAYERCAPTUREDPOKEMON c JOIN POKEMON p ON (c.SpeciesID = p.ID)) j
+  ON pl.Username = j.PlayerUsername
+  WHERE j.SpeciesName = $species
+  GROUP BY pl.TeamName
+  ORDER BY COUNT(*) DESC";
 
   return $query;
 }
@@ -192,6 +205,14 @@ if (isset($_GET["leaderboard"])) {
       } catch(Exception $e) {
           alertUser($e->getMessage());
       }
+      break;
+    case "Teams Who Own the Most Species Name":
+      try {
+        $query = teamsWithMostOwnedSpecies(parseInput($_GET["valueName"], 'char_20', 'Species Name'));
+      } catch(Exception $e) {
+          alertUser($e->getMessage());
+      }
+      break;
     default:
       break;
   }

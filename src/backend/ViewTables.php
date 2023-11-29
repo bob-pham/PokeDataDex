@@ -66,7 +66,7 @@ function getRowInputs($tableName) {
     foreach ($row as $cell) {
       $name = $tableName . "-" . $cell;
       $inputs = $inputs . "<label class=\"modify-item\">$cell</label>";
-      $inputs = $inputs . "<input type=\"checkbox\" id=\"$name\" name=\"$name\" value=\"$name\">";
+      $inputs = $inputs . "<input type=\"checkbox\" id=\"$name\" name=\"$name\" value=\"$name\" checked>";
     }
   }
   $inputs = $inputs . "</div>";

@@ -22,7 +22,7 @@ function hideAll(type) {
 }
 
 function leaderboardInputToggle(choice) {
-    if (choice === "Player's Strongest Pokemon" || choice === "Teams with N Players") {
+    if (choice === "Player's Strongest Pokemon" || choice === "Teams with N Players" || choice === "Teams Who Own the Most Species Name") {
         document.getElementById("value-input").style.display="flex";
         document.getElementById("count-input").style.display="flex";
         document.getElementById("query-submit").style.display="flex";
@@ -30,6 +30,8 @@ function leaderboardInputToggle(choice) {
             document.getElementById('value-input-label').innerHTML = 'Player Username:';
         } else if (choice === "Teams with N Players") {
             document.getElementById('value-input-label').innerHTML = '# of Players:';
+        } else if (choice === "Teams Who Own the Most Species Name") {
+            document.getElementById('value-input-label').innerHTML = 'Species Name';
         }
     } else if (choice === "None") {
         document.getElementById("value-input").style.display="none";
