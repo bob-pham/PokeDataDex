@@ -42,7 +42,8 @@
         <option value="Starts">Starts With (s%)</option>
         <option value="Has">Has (%s%)</option>
       </select>
-      <input type="submit" value="Submit">
+    </div>
+    <input type="submit" value="Submit">
     </div>
   </form>
   </div>
