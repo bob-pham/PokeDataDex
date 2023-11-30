@@ -104,6 +104,13 @@ function viewTables() {
     return;
   }
 
+  $result = executePlainSQL("SELECT Count(*) FROM $tableName");
+  if (($row = oci_fetch_row($result)) != false) {
+    echo '<div class="subheader">';
+    echo "<p> We Found " . $row[0] . " Results for $tableName!</p>";
+    echo '</div>';
+  }
+
   $result = executePlainSQL("SELECT column_name FROM USER_TAB_COLUMNS WHERE table_name = '$tableName'");
  
   while (($row = OCI_Fetch_Array($result, OCI_ASSOC | OCI_RETURN_NULLS)) != false) {
