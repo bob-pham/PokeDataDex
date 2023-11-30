@@ -16,7 +16,7 @@
         <div class="section">
           <h1 class="header-text">Navigate</h1>
             <div class="modify">
-              <form action="ViewTables.php">
+              <form action="ViewTables.php" class="query-item" >
                 <input type="submit" value="View Tables">
               </form>
               <form action="Insert.php" class="query-item" >

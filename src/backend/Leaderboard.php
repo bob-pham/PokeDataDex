@@ -1,5 +1,5 @@
 <div class="query">
-  <h2 class="header-text">Leaderboards</h2>
+  <h2>Leaderboards</h2>
   <form method="GET" class="query-section" action="PokeDataDex.php">
     <input type="hidden" name="leaderboard" id="leaderboard">
     <select name="leaderboardType" id="leaderboardType" onChange="leaderboardInputToggle(value)">
