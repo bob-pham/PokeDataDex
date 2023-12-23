@@ -14,3 +14,7 @@ players may do in-game. As such, players can keep track of what they have accomp
 the game, as well as compare with other players.
 
 Created as part of CPSC 304
+
+### Schema
+
+![ER_POGO3_updated drawio](https://github.com/bob-pham/PokeDataDex/assets/96148077/bd29f60c-21e3-49a9-88a7-7c440f812b42)
